@@ -1,0 +1,4 @@
+---
+
+- name: Tearing down the cluster
+  command: kops delete cluster --name k8.csye6225-fall2018-gaikawads.me --yes
