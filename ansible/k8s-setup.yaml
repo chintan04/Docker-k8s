@@ -2,6 +2,8 @@
 
 - hosts: localhost
   connection: local
+  vars: 
+    domain: "{{ domain }}"
   tasks:
   - include_role:
       name: kops/setup
