@@ -1,0 +1,5 @@
+---
+
+cluster_name: k8s.csye6225-fall2018-shahc.me
+state_store: s3://k8s.csye6225-fall2018-shahc.me
+node_count: 3
