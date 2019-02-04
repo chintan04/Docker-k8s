@@ -1,4 +1,4 @@
 ---
 
 - name: Tearing down the cluster
-  command: kops delete cluster --name k8.csye6225-fall2018-gaikawads.me --yes
+  command: kops delete cluster --name {{ cluster_name }} --state={{ state_store }} --yes
