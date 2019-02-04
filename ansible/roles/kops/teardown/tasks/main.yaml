@@ -1,0 +1,4 @@
+---
+
+- name: Tearing down the cluster
+  command: kops delete cluster --name {{ cluster_name }} --state={{ state_store }} --yes
