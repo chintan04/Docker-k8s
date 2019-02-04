@@ -11,7 +11,7 @@
         ansible-playbook k8s-teardown.yaml
 
 3. To override your variables using command line, use the following command-
-    ansible-playbook k8s-setup.yaml -e node_count=6 --extra-var cluster_name="your_domain_name"
+    1. ansible-playbook k8s-setup.yaml -e node_count=6 --extra-var cluster_name="your_domain_name"
 
 ## Team Information
 
