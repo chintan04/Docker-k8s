@@ -7,4 +7,4 @@
   shell: cd ../webapp && sudo mvn install && sudo docker build -t csye7374 .
 
 - name: Tag Docker image
-  command: sudo docker tag csye7374:latest {{ ecr_repo }}
+  command: sudo docker tag csye7374:latest {{ ecr_repo }}/csye7374:latest

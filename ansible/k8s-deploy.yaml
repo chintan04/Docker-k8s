@@ -3,6 +3,5 @@
 - hosts: localhost
   connection: local
   tasks:
-  - include_role:
-      name: docker/build_image
-      name: docker/push_image
+  - name: Setting up the kubernetes cluster
+    command: kubectl apply -f ../k8s/app/pod.yaml
