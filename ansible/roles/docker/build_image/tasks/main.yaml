@@ -1,9 +1,10 @@
 ---
+
 - name: Retrieving ECR login
-  command: $( sudo aws ecr get-login --no-include-email --region us-east-1)
+  shell: sudo $(aws ecr get-login --no-include-email --region us-east-1)
 
 - name: Build Docker image
-  command: sudo mvn install && sudo docker build -t csye7374 .
+  shell: cd ../webapp && sudo mvn install && sudo docker build -t csye7374 .
 
 - name: Tag Docker image
-  command: docker tag csye7374:latest {{ ecr_repo }}
+  command: sudo docker tag csye7374:latest {{ ecr_repo }}
