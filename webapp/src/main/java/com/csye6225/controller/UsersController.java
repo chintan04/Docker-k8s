@@ -114,7 +114,7 @@ public class UsersController {
 
     @GetMapping(value = {"/ping"}, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public void gettime(HttpServletRequest httpRequest, HttpServletResponse response) {
+    public void getping(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
             this.response = Response.jsonString("pong");
             response.getWriter().write(this.response);
