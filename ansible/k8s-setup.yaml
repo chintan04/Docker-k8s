@@ -4,4 +4,6 @@
   connection: local
   tasks:
   - include_role:
-      name: kops/setup
+      #name: kops/setup
+      name: docker/build_image
+      name: docker/push_image
