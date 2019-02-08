@@ -1,6 +1,6 @@
 ---
 
 - name: Push Docker image
-  command: sudo docker push {{ ecr_repo }}/latest
+  command: sudo docker push {{ ecr_repo }}
 
 
