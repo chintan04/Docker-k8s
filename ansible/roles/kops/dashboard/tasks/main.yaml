@@ -7,7 +7,10 @@
   command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.10.1/src/deploy/recommended/kubernetes-dashboard.yaml
 
 - name: Token retrieval
-  shell: kubectl -n -v kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+  shell: kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+  register: result
+
+- debug: var=result.stdout_lines
 
 - name: Creating proxy
   command: kubectl proxy
