@@ -37,3 +37,5 @@ testem.log
 Thumbs.db
 # retry files
 /ansible/*.retry
+#webapp target folder
+/webapp/target

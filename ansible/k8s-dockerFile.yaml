@@ -2,7 +2,9 @@
 
 - hosts: localhost
   connection: local
-  tasks:
-  - include_role:
-      name: docker/build_image
-      name: docker/push_image
+  roles:
+    - role: docker/build_image
+    - role: docker/push_image
+#   tasks:
+#   - include_role:
+#       name: docker/push_image

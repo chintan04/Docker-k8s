@@ -3,5 +3,8 @@
 - hosts: localhost
   connection: local
   tasks:
+  #- name: Set ECR repo name in comtainer env
+    #command: kubectl create configmap special-config --from-literal=ecr_repo={{ecr_repo}}
+
   - name: Setting up the kubernetes cluster
     command: kubectl apply -f ../k8s/app/pod.yaml

@@ -7,8 +7,14 @@ metadata:
     app: csye7374    
 spec:
   containers:
-  - image: "{{ ..Ansible.group_vars.all.vars.ecr_repo }}/csye7374:latest"
+  - image: 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest
     name: csye7374            
     ports:
     - containerPort: 8080    
       protocol: TCP
+    # env:
+    #   - name: ecr_repo
+    #     valueFrom:
+    #       configMapKeyRef:
+    #         name: special-config
+    #         key: ecr_repo
