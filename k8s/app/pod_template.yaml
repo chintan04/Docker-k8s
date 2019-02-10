@@ -7,14 +7,14 @@ metadata:
     app: csye7374    
 spec:
   containers:
-  - image: abc/csye7374:latest
+  - image: ecr_repo/csye7374:latest
     name: csye7374            
     ports:
     - containerPort: 8080    
       protocol: TCP
     # env:
-    #   - name: abc
+    #   - name: ecr_repo
     #     valueFrom:
     #       configMapKeyRef:
     #         name: special-config
-    #         key: abc
+    #         key: ecr_repo

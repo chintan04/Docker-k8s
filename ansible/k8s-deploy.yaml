@@ -6,6 +6,9 @@
   #- name: Set ECR repo name in comtainer env
     #command: kubectl create configmap special-config --from-literal=ecr_repo={{ecr_repo}}
 
+  - name: set the repo name in pod config
+    shell: sed 's/ecr_repo/{{ecr_repo}}/g' ../k8s/app/pod_template.yaml > ../k8s/app/pod.yaml
+  
   - name: Setting up the kubernetes cluster
     command: kubectl apply -f ../k8s/app/pod.yaml
 
