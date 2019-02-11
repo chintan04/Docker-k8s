@@ -1,0 +1,20 @@
+---
+apiVersion: v1               
+kind: Pod                    
+metadata:
+  name: csye7374
+  labels:
+    app: csye7374    
+spec:
+  containers:
+  - image: ecr_repo/csye7374:latest
+    name: csye7374            
+    ports:
+    - containerPort: 8080    
+      protocol: TCP
+    # env:
+    #   - name: ecr_repo
+    #     valueFrom:
+    #       configMapKeyRef:
+    #         name: special-config
+    #         key: ecr_repo

@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: docker/build_image
+    - role: docker/push_image
+#   tasks:
+#   - include_role:
+#       name: docker/push_image
