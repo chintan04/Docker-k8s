@@ -39,3 +39,4 @@ Thumbs.db
 /ansible/*.retry
 #webapp target folder
 /webapp/target
+/webapp/.idea

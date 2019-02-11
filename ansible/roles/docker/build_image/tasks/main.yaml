@@ -11,3 +11,4 @@
 
 - name: Remove old images
   shell: sudo docker rmi -f $(sudo docker images -q -f 'dangling=true')
+  ignore_errors: yes
