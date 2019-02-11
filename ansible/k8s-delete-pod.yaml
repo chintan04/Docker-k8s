@@ -1,0 +1,7 @@
+---
+
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Setting up the kubernetes cluster
+    command: kubectl delete -f ../k8s/app/pod.yaml

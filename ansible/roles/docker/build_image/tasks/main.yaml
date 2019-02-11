@@ -1,0 +1,14 @@
+---
+
+- name: Retrieving ECR login
+  shell: sudo $(aws ecr get-login --no-include-email --region us-east-1)
+
+- name: Build Docker image
+  shell: cd ../webapp && sudo mvn install && sudo docker build --no-cache -t csye7374 .
+
+- name: Tag Docker image
+  command: sudo docker tag csye7374:latest {{ ecr_repo }}/csye7374:latest
+
+- name: Remove old images
+  shell: sudo docker rmi -f $(sudo docker images -q -f 'dangling=true')
+  ignore_errors: yes
