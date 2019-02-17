@@ -1,0 +1,17 @@
+---
+
+- name: Creating RDS
+  - rds:
+    command: create
+    instance_name: csye7374
+    db_engine: postgres
+    size: 10
+    instance_type: db.t2.medium
+    username: csye7374master
+    password: csye774password
+    tags:
+      Environment: testing
+      Application: cms
+
+
+
