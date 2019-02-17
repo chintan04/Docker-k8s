@@ -1,2 +1,6 @@
 ---
 
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/s3
