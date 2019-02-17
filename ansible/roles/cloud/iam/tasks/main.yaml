@@ -1,9 +1,15 @@
 ---
-
-- name: Retrieving ECR login
-  shell: sudo $(aws ecr get-login --no-include-email --region us-east-1)
-
-- name: Push Docker image
-  command: sudo docker push {{ ecr_repo }}/csye7374:latest
+- name: Create IAM role with custom trust relationship
+  iam:
+    iam_type: role
+    name: EC2serviceRole
+    state: present
+    trust_policy:
+      Version: '2012-10-17'
+      Statement:
+      - Action: sts:AssumeRole
+        Effect: Allow
+        Principal:
+          Service: ec2.amazonaws.com
 
 
