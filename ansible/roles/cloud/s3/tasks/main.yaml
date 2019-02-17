@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: Create S3 bucket
+    s3_bucket:
+      name: "{{ bucket_name }}"
+
+
