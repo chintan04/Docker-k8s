@@ -26,23 +26,29 @@
       vpc-id: "{{vpc.vpcs[0].id}}"
   register: subnet
 
-- name: create rds instance 
-  rds_instance:
-    engine: postgres
-    db_instance_identifier: csye7374-spring2019
-    instance_type: db.t2.medium
-    username: csye7374master
-    password: csye7374password
-    engine_version: 10.5
-    vpc_security_group_ids: "{{sg_rds.group_id}}"
-    allocated_storage: 5
+- rds_subnet_group:
+    state: present
+    description: RDS Subnet Group Creation
+    name: RDS Subnet Group
+    region: us-east-1
+    subnets:
+      - "{{subnet.subnets[0].id}}"
+      - "{{subnet.subnets[1].id}}"
+  register: rds_subnet
 
 - name: Creating RDS
   rds:
     command: create
     db_name: csye7374
     instance_name: csye7374-spring2019
+    db_engine: postgres
+    engine_version: 10.5
+    size: 5
+    instance_type: db.t2.medium
+    username: csye7374master
+    password: csye774password
+    vpc_security_groups: "{{sg_rds.group_id}}"
+    subnet: "{{rds_subnet.subnet_group.name}}"
     publicly_accessible: no
     multi_zone: no
     region: us-east-1
-    

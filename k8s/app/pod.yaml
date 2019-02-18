@@ -7,14 +7,14 @@ metadata:
     app: csye7374    
 spec:
   containers:
-  - image: abc/csye7374:latest
+  - image: 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest
     name: csye7374            
     ports:
     - containerPort: 8080    
       protocol: TCP
     # env:
-    #   - name: abc
+    #   - name: 757638245294.dkr.ecr.us-east-1.amazonaws.com
     #     valueFrom:
     #       configMapKeyRef:
     #         name: special-config
-    #         key: abc
+    #         key: 757638245294.dkr.ecr.us-east-1.amazonaws.com
