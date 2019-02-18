@@ -1,10 +1,10 @@
 ---
 
-- hosts: localhost
-  connection: local
-  tasks:
-  - include_role:
-      name: kops/setup
+# - hosts: localhost
+#   connection: local
+#   tasks:
+#   - include_role:
+#       name: kops/setup
       
 - hosts: localhost
   connection: local

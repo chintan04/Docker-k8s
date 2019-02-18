@@ -1,17 +1,54 @@
 ---
 
+- ec2_vpc_net_facts:
+    filters:
+      "tag:Name": "{{cluster_name}}"
+  register: vpc
+
+- debug: var=vpc.vpcs[0].id
+
+- name: Creating RDS security group
+  ec2_group:
+    name: dbserverSecurityGroup
+    description: DB security group
+    vpc_id: "{{vpc.vpcs[0].id}}"
+    rules:
+      - proto: tcp
+        from_port: 5432
+        to_port: 5432
+        cidr_ip: 0.0.0.0/0
+  register: sg_rds
+
+- debug: var=sg_rds.group_id
+
+- ec2_vpc_subnet_facts: 
+    filters:
+      vpc-id: "{{vpc.vpcs[0].id}}"
+  register: subnet
+
+- rds_subnet_group:
+    state: present
+    description: RDS Subnet Group Creation
+    name: RDS Subnet Group
+    region: us-east-1
+    subnets:
+      - "{{subnet.subnets[0].id}}"
+      - "{{subnet.subnets[1].id}}"
+  register: rds_subnet
+
 - name: Creating RDS
-  - rds:
+  rds:
     command: create
-    instance_name: csye7374
+    db_name: csye7374
+    instance_name: csye7374-spring2019
     db_engine: postgres
-    size: 10
+    engine_version: 10.5
+    size: 5
     instance_type: db.t2.medium
     username: csye7374master
     password: csye774password
-    tags:
-      Environment: testing
-      Application: cms
-
-
-
+    vpc_security_groups: "{{sg_rds.group_id}}"
+    subnet: "{{rds_subnet.subnet_group.name}}"
+    publicly_accessible: no
+    multi_zone: no
+    region: us-east-1
