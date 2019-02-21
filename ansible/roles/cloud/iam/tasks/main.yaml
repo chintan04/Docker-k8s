@@ -11,5 +11,6 @@
         Effect: Allow
         Principal:
           Service: ec2.amazonaws.com
-
+    managed_policy:
+      - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
 
