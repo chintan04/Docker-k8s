@@ -4,3 +4,18 @@
   connection: local
   roles:
     - role: cloud/iam
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/s3
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/rds
+    
+# - hosts: localhost
+#   connection: local
+#   roles:
+#     - role: cloud/elb
