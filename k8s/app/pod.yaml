@@ -22,7 +22,7 @@ kind: ReplicationController
 metadata:
   name: csye7374-rc
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     app: csye7374
   template:
@@ -68,11 +68,11 @@ spec:
           protocol: TCP
         resources:
           limits:
-            memory: "500m"
-            cpu: "256Mi"
+            memory: "256Mi"
+            cpu: "200m"
           requests:
-            memory: "250m"
-            cpu: "128Mi"
+            memory: "200Mi"
+            cpu: "200m"
 
 ---
 apiVersion: v1
