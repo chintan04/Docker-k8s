@@ -1,9 +1,14 @@
 ---
+- name: Retreiving the rolename
+  shell: aws iam list-roles | grep nodes |  grep RoleName | awk '{print $2}' | tr -d '"' | tr -d ','
+  register: rolename
+
+- debug: var=rolename.stdout_lines[0]
 
 - name: Create S3 policy from template
   iam_policy:
     iam_type: role
-    iam_name: nodes.k8s.csye6225-fall2018-gaikawads.me
+    iam_name: "{{ rolename.stdout_lines[0] }}"
     policy_name: "S3-Access"
     state: present
     policy_json: " {{ lookup( 'template', 'policy.json') }} "
