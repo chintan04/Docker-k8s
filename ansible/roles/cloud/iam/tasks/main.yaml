@@ -1,21 +1,9 @@
 ---
-- name: Create IAM role with custom trust relationship
-  iam:
-    iam_type: role
-    name: EC2serviceRole
-    state: present
-    trust_policy:
-      Version: '2012-10-17'
-      Statement:
-      - Action: sts:AssumeRole
-        Effect: Allow
-        Principal:
-          Service: ec2.amazonaws.com
 
 - name: Create S3 policy from template
   iam_policy:
     iam_type: role
-    iam_name: "EC2serviceRole"
+    iam_name: nodes.k8s.csye6225-fall2018-gaikawads.me
     policy_name: "S3-Access"
     state: present
     policy_json: " {{ lookup( 'template', 'policy.json') }} "
