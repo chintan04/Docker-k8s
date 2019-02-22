@@ -68,4 +68,4 @@
 - debug: var=rds_facts.instances[0].endpoint.address
 
 - name: Set ECR repo name in comtainer env
-  command: kubectl create configmap db-endpoint --from-literal=db_endpoint=jdbc:postgresql://{{rds_facts.instances[0].endpoint.address}}:5432/csye6225
+  command: kubectl create configmap db-endpoint --from-literal=db_endpoint=jdbc:postgresql://{{rds_facts.instances[0].endpoint.address}}:5432/csye7374

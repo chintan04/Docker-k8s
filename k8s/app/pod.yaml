@@ -1,10 +1,10 @@
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: csye7374-app-profile
-# data:
-#   profile: dev
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: csye7374-app-profile
+data:
+  profile: dev
 
 ---
 apiVersion: v1
@@ -22,7 +22,7 @@ kind: ReplicationController
 metadata:
   name: csye7374-rc
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     app: csye7374
   template:
@@ -37,45 +37,42 @@ spec:
         - name: bucketName                
           valueFrom:                     
             configMapKeyRef:             
-              name: csye7374-app-bucket     
+              name: csye7374-app-bucket
               key: bucket_name
+        
+        - name: -Dspring.datasource.url                
+          valueFrom:                     
+            configMapKeyRef:             
+              name: db-endpoint     
+              key: db_endpoint
+        
         - name: -Dspring.datasource.username                
           valueFrom:                     
             secretKeyRef:             
               name: csye7374-config-db-config     
               key: DB_USER
-        - name: -Dspring.datasource.username                
-          valueFrom:                     
-            secretKeyRef:             
-              name: csye7374-config-db-config     
-              key: DB_USER
+        
         - name: -Dspring.datasource.password                
           valueFrom:                     
             secretKeyRef:             
-              name: db-endpoint
-              key: db_endpoint
+              name: csye7374-config-db-config
+              key: DB_PASSWD
+        
         - name: -Dspring.profiles.active
           valueFrom:                     
             configMapKeyRef:             
               name: csye7374-app-profile
               key: profile
-        imagePullPolicy: Never
-        # livenessProbe:
-        #   httpGet:
-        #     path: /
-        #     port: 8080
-        #   initialDelaySeconds: 30
-        #   periodSeconds: 10
         ports:
         - containerPort: 8080    
           protocol: TCP
         resources:
           limits:
-            memory: "50m"
-            cpu: "100Mi"
+            memory: "256Mi"
+            cpu: "200m"
           requests:
-            memory: "50m"
-            cpu: "100Mi"
+            memory: "200Mi"
+            cpu: "200m"
 
 ---
 apiVersion: v1
