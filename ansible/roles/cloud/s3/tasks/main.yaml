@@ -5,3 +5,5 @@
     name: "{{ bucket_name }}"
 
 
+- name: Set ECR repo name in comtainer env
+  command: kubectl create configmap csye7374-app-bucket --from-literal=bucket_name={{bucket_name}}
