@@ -1,20 +1,92 @@
 ---
-apiVersion: v1               
-kind: Pod                    
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: csye7374-app-profile
+# data:
+#   profile: dev
+
+---
+apiVersion: v1
+kind: Secret
 metadata:
-  name: csye7374
-  labels:
-    app: csye7374    
+  name: csye7374-config-db-config
+stringData:                                    
+  DB_USER: csye7374master
+data:
+  DB_PASSWD: Y3N5ZTczNzRwYXNzd29yZA==
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: csye7374-rc
 spec:
-  containers:
-  - image: 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest
-    name: csye7374            
-    ports:
-    - containerPort: 8080    
-      protocol: TCP
-    # env:
-    #   - name: 557502683643.dkr.ecr.us-east-1.amazonaws.com
-    #     valueFrom:
-    #       configMapKeyRef:
-    #         name: special-config
-    #         key: 557502683643.dkr.ecr.us-east-1.amazonaws.com
+  replicas: 1
+  selector:
+    app: csye7374
+  template:
+    metadata:
+      labels:
+        app: csye7374
+    spec:
+      containers:
+      - image: 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest       
+        name: csye7374 
+        env:
+        - name: bucketName                
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-bucket     
+              key: bucket_name
+        - name: -Dspring.datasource.username                
+          valueFrom:                     
+            secretKeyRef:             
+              name: csye7374-config-db-config     
+              key: DB_USER
+        - name: -Dspring.datasource.username                
+          valueFrom:                     
+            secretKeyRef:             
+              name: csye7374-config-db-config     
+              key: DB_USER
+        - name: -Dspring.datasource.password                
+          valueFrom:                     
+            secretKeyRef:             
+              name: db-endpoint
+              key: db_endpoint
+        - name: -Dspring.profiles.active
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-profile
+              key: profile
+        imagePullPolicy: Never
+        # livenessProbe:
+        #   httpGet:
+        #     path: /
+        #     port: 8080
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        ports:
+        - containerPort: 8080    
+          protocol: TCP
+        resources:
+          limits:
+            memory: "50m"
+            cpu: "100Mi"
+          requests:
+            memory: "50m"
+            cpu: "100Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: csye7374-elb
+spec:
+  type: NodePort             
+  ports:
+  - port: 80                 
+    targetPort: 8080         
+    nodePort: 30130          
+  selector:
+    app: csye7374

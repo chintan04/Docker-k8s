@@ -1,10 +1,10 @@
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: csye7374-app-config
-data:
-  s3_bucket: s3_bucket_endpoint
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: csye7374-app-profile
+# data:
+#   profile: dev
 
 ---
 apiVersion: v1
@@ -12,9 +12,9 @@ kind: Secret
 metadata:
   name: csye7374-config-db-config
 stringData:                                    
-  DB_USER: mysql
+  DB_USER: csye7374master
 data:
-  DB_PASSWD: cGFzc3dvcmQ=
+  DB_PASSWD: Y3N5ZTczNzRwYXNzd29yZA==
 
 ---
 apiVersion: v1
@@ -31,25 +31,34 @@ spec:
         app: csye7374
     spec:
       containers:
-      containers:
       - image: ecr_repo/csye7374:latest       
         name: csye7374 
         env:
-        - name: s3_endpoint                
+        - name: bucketName                
           valueFrom:                     
             configMapKeyRef:             
-              name: csye7374-app-config     
-              key: s3_bucket
-        - name: DB_USER                
+              name: csye7374-app-bucket     
+              key: bucket_name
+        - name: -Dspring.datasource.username                
           valueFrom:                     
             secretKeyRef:             
               name: csye7374-config-db-config     
               key: DB_USER
-        - name: DB_PASSWD                
+        - name: -Dspring.datasource.username                
           valueFrom:                     
             secretKeyRef:             
               name: csye7374-config-db-config     
-              key: DB_PASSWD
+              key: DB_USER
+        - name: -Dspring.datasource.password                
+          valueFrom:                     
+            secretKeyRef:             
+              name: db-endpoint
+              key: db_endpoint
+        - name: -Dspring.profiles.active
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-profile
+              key: profile
         imagePullPolicy: Never
         # livenessProbe:
         #   httpGet:
@@ -62,11 +71,11 @@ spec:
           protocol: TCP
         resources:
           limits:
-            memory: "8Mi"
-            cpu: "1m"
+            memory: "50m"
+            cpu: "100Mi"
           requests:
-            memory: "8Mi"
-            cpu: "1m"
+            memory: "50m"
+            cpu: "100Mi"
 
 ---
 apiVersion: v1

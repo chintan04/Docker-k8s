@@ -26,6 +26,9 @@
       vpc-id: "{{vpc.vpcs[0].id}}"
   register: subnet
 
+- debug: var=subnet.subnets[0].id
+- debug: var=subnet.subnets[1].id
+
 - rds_subnet_group:
     state: present
     description: RDS Subnet Group Creation
@@ -46,9 +49,23 @@
     size: 5
     instance_type: db.t2.medium
     username: csye7374master
-    password: csye774password
+    password: csye7374password
     vpc_security_groups: "{{sg_rds.group_id}}"
     subnet: "{{rds_subnet.subnet_group.name}}"
     publicly_accessible: no
     multi_zone: no
     region: us-east-1
+
+- name: Waiting for RDS instance to start
+  rds_instance_facts: 
+    db_instance_identifier: csye7374-spring2019
+  register: rds_facts
+  until: rds_facts.instances[0].db_instance_status.find("available") != -1
+  retries: 15
+  delay: 60
+
+- debug: var=rds_facts.instances[0].db_instance_status
+- debug: var=rds_facts.instances[0].endpoint.address
+
+- name: Set ECR repo name in comtainer env
+  command: kubectl create configmap db-endpoint --from-literal=db_endpoint=jdbc:postgresql://{{rds_facts.instances[0].endpoint.address}}:5432/csye6225

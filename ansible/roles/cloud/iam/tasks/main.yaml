@@ -11,6 +11,11 @@
         Effect: Allow
         Principal:
           Service: ec2.amazonaws.com
-    managed_policy:
-      - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
 
+- name: Create S3 policy from template
+  iam_policy:
+    iam_type: role
+    iam_name: "EC2serviceRole"
+    policy_name: "S3-Access"
+    state: present
+    policy_json: " {{ lookup( 'template', 'policy.json') }} "
