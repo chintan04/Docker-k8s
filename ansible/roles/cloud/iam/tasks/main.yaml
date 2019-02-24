@@ -6,7 +6,7 @@
 - debug: var=rolename.stdout_lines[0]
 
 - name: set the s3 bucket name in policy json
-  shell: sed 's/bucket_name/{{bucket_name}}/g' policy_template.json > policy.json
+  shell: sed 's/bucket_name/{{bucket_name}}/g' roles/cloud/iam/tasks/policy_template.json > roles/cloud/iam/tasks/policy.json
 
 - name: Create S3 policy from template
   iam_policy:

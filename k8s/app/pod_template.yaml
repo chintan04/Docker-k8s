@@ -34,35 +34,37 @@ spec:
       - image: ecr_repo/csye7374:latest       
         name: csye7374 
         env:
+
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-profile
+              key: profile
+        
         - name: bucketName                
           valueFrom:                     
             configMapKeyRef:             
               name: csye7374-app-bucket
               key: bucket_name
         
-        - name: -Dspring.datasource.url                
+        - name: SPRING_DATASOURCE_URL              
           valueFrom:                     
             configMapKeyRef:             
               name: db-endpoint     
               key: db_endpoint
         
-        - name: -Dspring.datasource.username                
+        - name: SPRING_DATASOURCE_USERNAME               
           valueFrom:                     
             secretKeyRef:             
               name: csye7374-config-db-config     
               key: DB_USER
         
-        - name: -Dspring.datasource.password                
+        - name: SPRING_DATASOURCE_PASSWORD
           valueFrom:                     
             secretKeyRef:             
               name: csye7374-config-db-config
               key: DB_PASSWD
         
-        - name: -Dspring.profiles.active
-          valueFrom:                     
-            configMapKeyRef:             
-              name: csye7374-app-profile
-              key: profile
         ports:
         - containerPort: 8080    
           protocol: TCP
