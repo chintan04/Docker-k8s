@@ -16,7 +16,7 @@
       seconds: 60
 
   - name: Forwarding to port 8888
-    command: kubectl port-forward csye7374 8888:8080
+    command: kubectl port-forward service/csye7374-elb 8888:80
     register: result
 
   - debug: var=result.stdout_lines
