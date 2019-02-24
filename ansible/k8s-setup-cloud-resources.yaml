@@ -3,15 +3,15 @@
 # - hosts: localhost
 #   connection: local
 #   roles:
-#     - role: cloud/elb
+#     - role: cloud/s3
 
 - hosts: localhost
   connection: local
   roles:
-    # - role: cloud/s3
+    # - role: cloud/rds/create
     - role: cloud/rds/delete
     
 # - hosts: localhost
 #   connection: local
 #   roles:
-#     - role: cloud/elb
+#     - role: cloud/iam
