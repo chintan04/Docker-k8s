@@ -64,7 +64,18 @@ spec:
             secretKeyRef:             
               name: csye7374-config-db-config
               key: DB_PASSWD
-        
+        livenessProbe:
+          httpGet:
+            path: /user/testdbs3
+            port: 8080
+          initialDelaySeconds: 180
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /user/testdbs3
+            port: 8080
+          initialDelaySeconds: 180
+          periodSeconds: 20        
         ports:
         - containerPort: 8080    
           protocol: TCP

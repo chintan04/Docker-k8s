@@ -4,10 +4,12 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
+import com.csye6225.aws.AwsS3Client;
 import com.csye6225.model.Response;
 import com.csye6225.model.Users;
 import com.csye6225.repository.UserJpaRespository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,9 @@ public class UsersController {
 
     @Autowired
     private StatsDClient statsd;
+
+    @Autowired
+    private Environment env;
 
     private static int counter = 0;
 
@@ -156,5 +161,29 @@ public class UsersController {
         }
 
     }
+
+    @GetMapping(value = {"/testdbs3"})
+    @ResponseBody
+    public void getliveness(HttpServletRequest httpRequest, HttpServletResponse response) {
+        try {
+            userJpaRespository.findOne("test");
+
+            String BUCKET_NAME =env.getProperty("bucketName");
+            System.out.println(BUCKET_NAME+" :bucket name");
+            if(AwsS3Client.checks3Present(BUCKET_NAME)){
+                System.out.println("in if of s3");
+                response.setStatus(HttpServletResponse.SC_OK);
+            }else{
+                System.out.println("in else of s3");
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("catch exception is: "+ex);
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+
+        }
+    }
+
 
 }

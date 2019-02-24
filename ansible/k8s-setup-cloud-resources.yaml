@@ -1,17 +1,16 @@
 ---
 
-# - hosts: localhost
-#   connection: local
-#   roles:
-#     - role: cloud/s3
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/s3/create
 
 - hosts: localhost
   connection: local
   roles:
-    # - role: cloud/rds/create
-    - role: cloud/rds/delete
+    - role: cloud/rds/create
     
-# - hosts: localhost
-#   connection: local
-#   roles:
-#     - role: cloud/iam
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/iam
