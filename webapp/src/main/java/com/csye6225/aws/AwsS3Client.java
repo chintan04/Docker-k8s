@@ -54,4 +54,8 @@ public class AwsS3Client {
         fos.close();
         return convFile;
     }
+
+    public static boolean checks3Present(String BUCKET_NAME){
+        return  s3Client.doesBucketExist(BUCKET_NAME);
+    }
 }
