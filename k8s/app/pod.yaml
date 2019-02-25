@@ -1,20 +1,102 @@
 ---
-apiVersion: v1               
-kind: Pod                    
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: csye7374
-  labels:
-    app: csye7374    
+  name: csye7374-app-profile
+data:
+  profile: dev
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: csye7374-config-db-config
+stringData:                                    
+  DB_USER: csye7374master
+data:
+  DB_PASSWD: Y3N5ZTczNzRwYXNzd29yZA==
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: csye7374-rc
 spec:
-  containers:
-  - image: abc/csye7374:latest
-    name: csye7374            
-    ports:
-    - containerPort: 8080    
-      protocol: TCP
-    # env:
-    #   - name: abc
-    #     valueFrom:
-    #       configMapKeyRef:
-    #         name: special-config
-    #         key: abc
+  replicas: 3
+  selector:
+    app: csye7374
+  template:
+    metadata:
+      labels:
+        app: csye7374
+    spec:
+      containers:
+      - image: 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest       
+        name: csye7374 
+        env:
+
+        - name: SPRING_PROFILES_ACTIVE
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-profile
+              key: profile
+        
+        - name: bucketName                
+          valueFrom:                     
+            configMapKeyRef:             
+              name: csye7374-app-bucket
+              key: bucket_name
+        
+        - name: SPRING_DATASOURCE_URL              
+          valueFrom:                     
+            configMapKeyRef:             
+              name: db-endpoint     
+              key: db_endpoint
+        
+        - name: SPRING_DATASOURCE_USERNAME               
+          valueFrom:                     
+            secretKeyRef:             
+              name: csye7374-config-db-config     
+              key: DB_USER
+        
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:                     
+            secretKeyRef:             
+              name: csye7374-config-db-config
+              key: DB_PASSWD
+        livenessProbe:
+          httpGet:
+            path: /user/testdbs3
+            port: 8080
+          initialDelaySeconds: 180
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /user/testdbs3
+            port: 8080
+          initialDelaySeconds: 180
+          periodSeconds: 20        
+        ports:
+        - containerPort: 8080    
+          protocol: TCP
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: csye7374-elb
+spec:
+  type: LoadBalancer             
+  ports:
+  - port: 80                 
+    targetPort: 8080         
+    nodePort: 30130          
+  selector:
+    app: csye7374

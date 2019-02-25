@@ -1,0 +1,10 @@
+---
+
+- name: Create S3 bucket
+  s3_bucket:
+    name: "{{ bucket_name }}"
+
+- debug: var=bucket_name
+
+- name: Set ECR repo name in comtainer env
+  command: kubectl create configmap csye7374-app-bucket --from-literal=bucket_name={{bucket_name}}

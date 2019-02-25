@@ -1,0 +1,16 @@
+---
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/s3/create
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/rds/create
+    
+- hosts: localhost
+  connection: local
+  roles:
+    - role: cloud/iam

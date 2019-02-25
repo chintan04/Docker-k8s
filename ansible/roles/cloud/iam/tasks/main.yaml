@@ -1,0 +1,17 @@
+---
+- name: Retreiving the rolename
+  shell: aws iam list-roles | grep nodes |  grep RoleName | awk '{print $2}' | tr -d '"' | tr -d ','
+  register: rolename
+
+- debug: var=rolename.stdout_lines[0]
+
+- name: set the s3 bucket name in policy json
+  shell: sed 's/bucket_name/{{bucket_name}}/g' roles/cloud/iam/tasks/policy_template.json > roles/cloud/iam/tasks/policy.json
+
+- name: Create S3 policy from template
+  iam_policy:
+    iam_type: role
+    iam_name: "{{ rolename.stdout_lines[0] }}"
+    policy_name: "S3-Access"
+    state: present
+    policy_json: " {{ lookup( 'template', 'policy.json') }} "

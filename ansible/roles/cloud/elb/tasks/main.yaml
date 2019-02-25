@@ -1,0 +1,85 @@
+---
+
+- ec2_vpc_net_facts:
+    filters:
+      "tag:Name": "{{cluster_name}}"
+  register: vpc
+
+- debug: var=vpc.vpcs[0].id
+
+- name: Creating ELB security group
+  ec2_group:
+    name: elbSecurityGroup
+    description: ELB security group
+    vpc_id: "{{vpc.vpcs[0].id}}"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 443
+        to_port: 443
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 8080
+        to_port: 8080
+        cidr_ip: 0.0.0.0/0
+  register: sg_elb
+
+- debug: var=sg_elb.group_id
+
+# - ec2_vpc_subnet_facts: 
+#     filters:
+#       vpc-id: "{{vpc.vpcs[0].id}}"
+#   register: subnet
+
+# - elb_target_group:
+#     name: elbtargetgroup
+#     protocol: http
+#     port: 8080
+#     vpc_id: "{{vpc.vpcs[0].id}}"
+#     health_check_path: /
+#     health_check_port: 8080
+#     health_check_interval: 30
+#     healthy_threshold_count: 3
+#     unhealthy_threshold_count: 5
+#     health_check_timeout: 5
+#     target_type: instance
+#     state: present
+#   register: target
+# - debug: var=target.target_group_name
+
+# - name: Obtain all ACM SSL certificates
+#   aws_acm_facts:
+#   register: sslcert
+# - debug: var=sslcert.certificates[0].certificate_arn
+
+# - elb_application_lb:
+#     name: elb
+#     security_groups: "{{sg_elb.group_id}}"
+#     subnets:
+#       - "{{subnet.subnets[0].id}}"
+#       - "{{subnet.subnets[1].id}}"
+#     listeners:
+#       - Protocol: HTTPS
+#         Port: 443
+#         SslPolicy: ELBSecurityPolicy-2015-05
+#         Certificates:
+#           - CertificateArn: "{{sslcert.certificates[0].certificate_arn}}"
+#         DefaultActions:
+#           - Type: forward
+#             TargetGroupName: "{{target.target_group_name}}"
+#       - Protocol: HTTP
+#         Port: 80
+#         DefaultActions:
+#           - Type: redirect
+#             RedirectConfig:
+#               Protocol: HTTPS
+#               Port: "443"
+#               StatusCode: "HTTP_301"
+#     state: present
