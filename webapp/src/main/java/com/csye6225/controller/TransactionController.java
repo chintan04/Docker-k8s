@@ -1,6 +1,7 @@
 package com.csye6225.controller;
 
 import com.csye6225.filter.AuthFilter;
+import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Transaction;
 import com.csye6225.model.Users;
@@ -45,6 +46,7 @@ public class TransactionController {
     public void getTransaction(HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.get");
+            Prometheus.increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             List<Transaction> transactionListtemp = new ArrayList<Transaction>(transactionJpaRepository.findAll());
@@ -75,6 +77,7 @@ public class TransactionController {
     public void createTransaction(@RequestBody Transaction transaction, HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.post");
+            Prometheus.increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             System.out.println("username createTransaction- "+username);
@@ -116,6 +119,7 @@ public class TransactionController {
     public void updateTransaction(@RequestBody Transaction transaction, HttpServletRequest request, @PathVariable UUID id, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.put");
+            Prometheus.increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             if (username != null) {
@@ -170,6 +174,7 @@ public class TransactionController {
     public void deleteTransaction(@PathVariable UUID id, HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.delete");
+            Prometheus.increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             if (username != null) {

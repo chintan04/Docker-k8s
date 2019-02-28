@@ -5,6 +5,7 @@ import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.csye6225.aws.AwsS3Client;
+import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Users;
 import com.csye6225.repository.UserJpaRespository;
@@ -50,6 +51,7 @@ public class UsersController {
             counter++;
             statsd.incrementCounter("endpoint.register.http.post");
             System.out.println(counter);
+            Prometheus.increment();
             response.setContentType("application/json");
             if (!user.getUsername().matches("^(.+)@(.+)\\.(.+)$")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -85,6 +87,7 @@ public class UsersController {
             counter++;
             statsd.incrementCounter("endpoint.time.http.get");
             System.out.println(counter);
+            Prometheus.increment();
             response.setContentType("application/json");
             final String authorization = httpRequest.getHeader("Authorization");
             if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
@@ -136,6 +139,7 @@ public class UsersController {
             response.setContentType("application/json");
             Users userobj = userJpaRespository.findOne(user.getUsername());
             if (userobj != null) {
+                Prometheus.increment();
                 System.out.println("try - " + user.getUsername());
                 AmazonSNS amazonSNS = AmazonSNSClientBuilder.defaultClient();
                 System.out.println("Getting ARN........");
