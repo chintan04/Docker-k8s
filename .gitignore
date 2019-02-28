@@ -40,3 +40,6 @@ Thumbs.db
 #webapp target folder
 /webapp/target
 /webapp/.idea
+
+/ansible/group_vars/all/vars.yaml
+
