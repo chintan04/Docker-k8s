@@ -2,6 +2,7 @@ package com.csye6225.controller;
 
 import com.csye6225.aws.AwsS3Client;
 import com.csye6225.filter.AuthFilter;
+import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Attachment;
 import com.csye6225.model.Response;
 import com.csye6225.model.Transaction;
@@ -48,6 +49,7 @@ public class AttachmentController {
     @ResponseBody
     public void getAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid) {
         statsd.incrementCounter("endpoint.attachment.http.get");
+        Prometheus.increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
@@ -83,6 +85,7 @@ public class AttachmentController {
     @ResponseBody
     public void addAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @RequestPart("file") MultipartFile multipartFile) {
         statsd.incrementCounter("endpoint.attachment.http.post");
+        Prometheus.increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         System.out.println(multipartFile.getContentType());
@@ -165,6 +168,7 @@ public class AttachmentController {
     @ResponseBody
     public void deleteAttachemnt(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @PathVariable UUID aid) {
         statsd.incrementCounter("endpoint.attachment.http.delete");
+        Prometheus.increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
@@ -224,6 +228,7 @@ public class AttachmentController {
     @ResponseBody
     public void updateAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @PathVariable UUID aid, @RequestPart("file") MultipartFile multipartFile) {
         statsd.incrementCounter("endpoint.attachment.http.put");
+        Prometheus.increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
