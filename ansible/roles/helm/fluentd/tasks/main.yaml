@@ -1,0 +1,16 @@
+---
+
+- name: creating log group
+  command: aws logs create-log-group --log-group-name kubernetes
+
+
+- name: Installing fluentD cloudwatch
+  shell: helm install --name fluentd-test incubator/fluentd-cloudwatch --set extraVars[0]="\{ name: FLUENT_UID\, value: '0' \}"
+
+
+- name: Validating cluster
+  command: kops validate cluster --name={{ cluster_name }} --state={{ state_store }}
+  register: result
+  until: result.stdout.find("is ready") != -1
+  retries: 10
+  delay: 60
