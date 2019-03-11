@@ -31,7 +31,7 @@ spec:
         app: csye7374
     spec:
       containers:
-      - image: 501702557048.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest       
+      - image: 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest       
         name: csye7374 
         env:
 

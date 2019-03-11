@@ -23,6 +23,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import com.timgroup.statsd.StatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClient;
@@ -43,6 +45,9 @@ public class UsersController {
     private Environment env;
 
     private static int counter = 0;
+
+    LogManager logManager = LogManager.getLogManager();
+    Logger log = logManager.getLogger(this.getClass().getName());
 
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -124,8 +129,10 @@ public class UsersController {
     @ResponseBody
     public void getping(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
+
             this.response = Response.jsonString("pong");
             response.getWriter().write(this.response);
+            log.info("Successful ping msg");
         } catch (Exception ex) {
 
         }
