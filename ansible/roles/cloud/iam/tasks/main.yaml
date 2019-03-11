@@ -17,7 +17,7 @@
     policy_json: " {{ lookup( 'template', 'policy.json') }} "
     
 - name: Creating cloudwatch policy from template
- iam_policy:
+  iam_policy:
    iam_type: role
    iam_name: "{{ rolename.stdout_lines[0] }}"
    policy_name: "k8-cloudwatch-Access"
