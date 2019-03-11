@@ -5,7 +5,7 @@
 
 
 - name: Installing fluentD cloudwatch
-  shell: helm install --name fluentd-test incubator/fluentd-cloudwatch --set extraVars[0]="\{ name: FLUENT_UID\, value: '0' \}"
+  shell: helm install --name fluentd-test-02 incubator/fluentd-cloudwatch --set extraVars[0]="\{name":" FLUENT_UID\, value":" '0'\}"
 
 
 - name: Validating cluster
