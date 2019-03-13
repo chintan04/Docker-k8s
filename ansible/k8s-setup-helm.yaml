@@ -1,0 +1,13 @@
+---
+
+# - hosts: localhost
+#   connection: local
+#   tasks:
+#   - include_role:
+#       name: helm/helm-setup
+      
+- hosts: localhost
+  connection: local
+  tasks:
+  - include_role:
+      name: helm/fluentd
