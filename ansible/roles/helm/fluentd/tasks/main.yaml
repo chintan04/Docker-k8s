@@ -6,11 +6,3 @@
 
 - name: Installing fluentD cloudwatch
   shell: helm install --name my-release3 -f roles/helm/fluentd/tasks/values.yaml incubator/fluentd-cloudwatch
-
-
-- name: Validating cluster
-  command: kops validate cluster --name={{ cluster_name }} --state={{ state_store }}
-  register: result
-  until: result.stdout.find("is ready") != -1
-  retries: 10
-  delay: 60
