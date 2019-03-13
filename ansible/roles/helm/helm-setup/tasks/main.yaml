@@ -12,3 +12,10 @@
 
 - name: deploy tiller
   command: kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+- name: Validating tiller
+  command: helm version
+  register: result
+  until: result.stdout.find("Server") != -1
+  retries: 3
+  delay: 10

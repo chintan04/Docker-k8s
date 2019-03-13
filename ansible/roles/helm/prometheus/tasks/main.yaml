@@ -1,0 +1,10 @@
+---
+
+- name: Installing prometheus
+  shell: helm install --name prometheus stable/prometheus
+
+- name: Exporting Pod name
+  shell: export POD_NAME=$(kubectl get pods --namespace default -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+
+- name: forwarding to localhost port 9090
+  shell: kubectl --namespace default port-forward $POD_NAME 9090 &
