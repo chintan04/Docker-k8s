@@ -17,14 +17,26 @@ data:
   DB_PASSWD: Y3N5ZTczNzRwYXNzd29yZA==
 
 ---
-apiVersion: v1
-kind: ReplicationController
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: aws-ebs-slow-lab07
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
+  fsType: ext4
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
 metadata:
   name: csye7374-rc
 spec:
+  serviceName: stateful-sets-lab7
   replicas: 3
   selector:
-    app: csye7374
+    matchLabels:
+      app: csye7374
   template:
     metadata:
       labels:
@@ -32,7 +44,8 @@ spec:
     spec:
       containers:
       - image: ecr_repo/csye7374:latest       
-        name: csye7374 
+        name: csye7374
+        imagePullPolicy: IfNotPresent 
         env:
 
         - name: SPRING_PROFILES_ACTIVE
@@ -86,6 +99,19 @@ spec:
           requests:
             memory: "200Mi"
             cpu: "200m"
+        volumeMounts:
+        - mountPath: /aws-ebs-vol
+          name: data
+  volumeClaimTemplates:
+  - metadata:                        
+      name: data                     
+    spec:
+      storageClassName: aws-ebs-slow-lab07                        
+      resources:                     
+        requests:                    
+          storage: 1Gi               
+      accessModes:                   
+      - ReadWriteOnce 
 
 ---
 apiVersion: v1
