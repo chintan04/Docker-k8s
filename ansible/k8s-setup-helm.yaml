@@ -1,0 +1,10 @@
+---
+
+- hosts: localhost
+  connection: local
+  roles:
+    - role: helm/helm-setup
+    - role: helm/fluentd
+    - role: helm/prometheus
+    - role: helm/grafana
+

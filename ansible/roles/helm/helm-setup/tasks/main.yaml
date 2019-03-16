@@ -1,0 +1,25 @@
+---
+
+- name: helm initialization
+  command: helm init
+
+
+- name: creating service account tiller
+  command: kubectl create serviceaccount --namespace kube-system tiller
+
+- name: creating cluster role binding
+  command: kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+
+- name: deploy tiller
+  command: kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+
+- name: Validating tiller
+  command: helm version
+  register: result
+  until: result.stdout.find("Server") != -1
+  retries: 3
+  delay: 10
+
+- name: Adding incubator api to helm repo
+  command: helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+  ignore_errors: yes
