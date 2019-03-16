@@ -8,7 +8,6 @@
     grafana_url: "http://localhost:3000"
     grafana_user: "admin"
     grafana_password: "{{grafpwd.stdout_lines[0]}}"
-    org_id: 1
     ds_type: "prometheus"
     url: "http://localhost:9090"
     access: "direct"

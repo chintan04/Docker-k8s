@@ -1,8 +1,9 @@
 ---
 
-# - name: creating log group
-#   command: aws logs create-log-group --log-group-name kubernetes
+- name: creating log group
+  command: aws logs create-log-group --log-group-name kubernetes
+  ignore_errors: yes
 
 
 - name: Installing fluentD cloudwatch
-  shell: helm install --name my-release3 -f roles/helm/fluentd/tasks/values.yaml incubator/fluentd-cloudwatch
+  shell: helm install --name fluentd -f roles/helm/fluentd/tasks/values.yaml incubator/fluentd-cloudwatch
