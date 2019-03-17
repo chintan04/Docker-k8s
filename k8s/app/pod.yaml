@@ -8,16 +8,6 @@ data:
 
 ---
 apiVersion: v1
-kind: Secret
-metadata:
-  name: csye7374-config-db-config
-stringData:                                    
-  DB_USER: csye7374master
-data:
-  DB_PASSWD: Y3N5ZTczNzRwYXNzd29yZA==
-
----
-apiVersion: v1
 kind: ReplicationController
 metadata:
   name: csye7374-rc
@@ -31,7 +21,7 @@ spec:
         app: csye7374
     spec:
       containers:
-      - image: 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest       
+      - image: ecr_repo/csye7374:latest   
         name: csye7374 
         env:
 
@@ -82,10 +72,10 @@ spec:
         resources:
           limits:
             memory: "256Mi"
-            cpu: "200m"
+            cpu: "500m"
           requests:
-            memory: "200Mi"
-            cpu: "200m"
+            memory: "256Mi"
+            cpu: "500m"
 
 ---
 apiVersion: v1

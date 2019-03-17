@@ -19,3 +19,7 @@
   until: result.stdout.find("Server") != -1
   retries: 3
   delay: 10
+
+- name: Adding incubator api to helm repo
+  command: helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+  ignore_errors: yes

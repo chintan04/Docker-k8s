@@ -9,6 +9,7 @@ import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Users;
 import com.csye6225.repository.UserJpaRespository;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
@@ -57,6 +58,7 @@ public class UsersController {
             statsd.incrementCounter("endpoint.register.http.post");
             System.out.println(counter);
             Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             response.setContentType("application/json");
             if (!user.getUsername().matches("^(.+)@(.+)\\.(.+)$")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -93,6 +95,7 @@ public class UsersController {
             statsd.incrementCounter("endpoint.time.http.get");
             System.out.println(counter);
             Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             response.setContentType("application/json");
             final String authorization = httpRequest.getHeader("Authorization");
             if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
@@ -129,7 +132,8 @@ public class UsersController {
     @ResponseBody
     public void getping(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
-
+            Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             this.response = Response.jsonString("pong");
             response.getWriter().write(this.response);
             log.info("Successful ping msg");
@@ -144,7 +148,8 @@ public class UsersController {
         try {
             statsd.incrementCounter("endpoint.reset.http.post");
             response.setContentType("application/json");
-            Users userobj = userJpaRespository.findOne(user.getUsername());
+            Metrics.counter("User.Controller").increment();
+            Users userobj = userJpaRespository.getOne(user.getUsername());
             if (userobj != null) {
                 Prometheus.increment();
                 System.out.println("try - " + user.getUsername());
@@ -177,7 +182,7 @@ public class UsersController {
     @ResponseBody
     public void getliveness(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
-            userJpaRespository.findOne("test");
+            userJpaRespository.getOne("test");
 
             String BUCKET_NAME =env.getProperty("bucketName");
             System.out.println(BUCKET_NAME+" :bucket name");

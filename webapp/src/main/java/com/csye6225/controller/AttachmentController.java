@@ -11,6 +11,7 @@ import com.csye6225.repository.TransactionJpaRepository;
 import com.csye6225.repository.UserJpaRespository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.timgroup.statsd.StatsDClient;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.core.env.Environment;
@@ -50,6 +51,7 @@ public class AttachmentController {
     public void getAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid) {
         statsd.incrementCounter("endpoint.attachment.http.get");
         Prometheus.increment();
+        Metrics.counter("Attachment.Controller").increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
@@ -57,7 +59,7 @@ public class AttachmentController {
                 if (tid == null || tid.toString().trim().length() == 0) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 } else {
-                    Transaction transc = transactionJpaRepository.findOne(tid);
+                    Transaction transc = transactionJpaRepository.getOne(tid);
                     if (transc.getUser().getUsername().equals(username)) {
                         Attachment attachment = transc.getAttachment();
                         ObjectMapper mapper = new ObjectMapper();
@@ -86,6 +88,7 @@ public class AttachmentController {
     public void addAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @RequestPart("file") MultipartFile multipartFile) {
         statsd.incrementCounter("endpoint.attachment.http.post");
         Prometheus.increment();
+        Metrics.counter("Attachment.Controller").increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         System.out.println(multipartFile.getContentType());
@@ -94,7 +97,7 @@ public class AttachmentController {
             String BUCKET_NAME =env.getProperty("bucketName");
             if (username != null) {
                 if (tid != null || tid.toString().trim().length() != 0) {
-                    Transaction transc = transactionJpaRepository.findOne(tid);
+                    Transaction transc = transactionJpaRepository.getOne(tid);
                     if (transc != null && transc.getUser().getUsername().equals(username)) {
 
                         if (transc.getAttachment() == null) {
@@ -169,6 +172,7 @@ public class AttachmentController {
     public void deleteAttachemnt(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @PathVariable UUID aid) {
         statsd.incrementCounter("endpoint.attachment.http.delete");
         Prometheus.increment();
+        Metrics.counter("Attachment.Controller").increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
@@ -179,13 +183,13 @@ public class AttachmentController {
                     this.response = Response.jsonString("Bad Request");
                     response.getWriter().write(this.response);
                 } else {
-                    Transaction transc = transactionJpaRepository.findOne(tid);
+                    Transaction transc = transactionJpaRepository.getOne(tid);
                     if (transc.getUser().getUsername().equals(username)) {
                         if (transc.getAttachment() != null) {
                             if (transc.getAttachment().getAttachment_id().equals(aid)) {
                                 String url = transc.getAttachment().getUrl();
                                 transc.setAttachment(null);
-                                attachmentjpaRepository.delete(aid);
+                                attachmentjpaRepository.getOne(aid);
                                 if (env.getProperty("profile").equals("dev")) {
                                     AwsS3Client.deleteImg(BUCKET_NAME, aid);
                                 }
@@ -229,6 +233,7 @@ public class AttachmentController {
     public void updateAttachment(HttpServletRequest request, HttpServletResponse response, @PathVariable UUID tid, @PathVariable UUID aid, @RequestPart("file") MultipartFile multipartFile) {
         statsd.incrementCounter("endpoint.attachment.http.put");
         Prometheus.increment();
+        Metrics.counter("Attachment.Controller").increment();
         response.setContentType("application/json");
         String username = AuthFilter.authorizeUser(request, userJpaRespository);
         try {
@@ -241,7 +246,7 @@ public class AttachmentController {
                     response.getWriter().write(this.response);
                 } else {
                     if (tid != null || tid.toString().trim().length() != 0) {
-                        Transaction transc = transactionJpaRepository.findOne(tid);
+                        Transaction transc = transactionJpaRepository.getOne(tid);
                         if (transc != null && transc.getUser().getUsername().equals(username)) {
                             String fileExtension = getFileExtension(multipartFile);
                             if (fileExtension.equalsIgnoreCase("jpeg") || fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {

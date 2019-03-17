@@ -7,9 +7,4 @@
     - role: helm/fluentd
     - role: helm/prometheus
     - role: helm/grafana
-      
-# - hosts: localhost
-#   connection: local
-#   tasks:
-#   - include_role:
-#       name: helm/fluentd
+
