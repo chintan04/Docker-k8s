@@ -10,7 +10,7 @@
         "pluginName": "Prometheus"
       }
     ],
-    "id": 6,
+    "id": null,
     "title": "Webapp Dashboard",
     "description": "A simple overview of the most important Docker host and container metrics. (cAdvisor/Prometheus)",
     "tags": [],
