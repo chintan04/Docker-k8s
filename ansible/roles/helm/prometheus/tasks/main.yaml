@@ -1,7 +1,7 @@
 ---
 
 
-# Gather facts about all ELBs
+#Gather facts about all ELBs
 
 - name: Get load_balancer endpoint
   shell: kubectl get svc -o=json --field-selector=metadata.name=csye7374-elb | jq '.items[].status.loadBalancer.ingress[].hostname'
@@ -18,7 +18,7 @@
   shell: helm install --name prometheus -f roles/helm/prometheus/tasks/values.yaml stable/prometheus
 
 - name: Validating prometheus
-  command: kubectl get deployment prometheus-server
+  shell: kubectl get pods|grep prometheus-server-0
   register: result
   until: result.stdout.find("2/2") != -1
   retries: 10
