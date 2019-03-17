@@ -1,6 +1,7 @@
 package com.csye6225.controller;
 
 import com.csye6225.filter.AuthFilter;
+import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Transaction;
 import com.csye6225.model.Users;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.timgroup.statsd.NonBlockingStatsDClient;
 import com.timgroup.statsd.StatsDClient;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -45,6 +47,8 @@ public class TransactionController {
     public void getTransaction(HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.get");
+            Prometheus.increment();
+            Metrics.counter("Transaction.Controller").increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             List<Transaction> transactionListtemp = new ArrayList<Transaction>(transactionJpaRepository.findAll());
@@ -75,6 +79,8 @@ public class TransactionController {
     public void createTransaction(@RequestBody Transaction transaction, HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.post");
+            Prometheus.increment();
+            Metrics.counter("Transaction.Controller").increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             System.out.println("username createTransaction- "+username);
@@ -116,6 +122,8 @@ public class TransactionController {
     public void updateTransaction(@RequestBody Transaction transaction, HttpServletRequest request, @PathVariable UUID id, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.put");
+            Prometheus.increment();
+            Metrics.counter("Transaction.Controller").increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             if (username != null) {
@@ -124,7 +132,7 @@ public class TransactionController {
                     this.response = Response.jsonString("Bad Request");
                     response.getWriter().write(this.response);
                 } else {
-                    Transaction transc = transactionJpaRepository.findOne(id);
+                    Transaction transc = transactionJpaRepository.getOne(id);
                     if (transc != null) {
                         if (transc.getUser().getUsername().equals(username)) {
                             if (transaction.getDescription() != null)
@@ -170,6 +178,8 @@ public class TransactionController {
     public void deleteTransaction(@PathVariable UUID id, HttpServletRequest request, HttpServletResponse response) {
         try {
             statsd.incrementCounter("endpoint.transaction.http.delete");
+            Prometheus.increment();
+            Metrics.counter("Transaction.Controller").increment();
             response.setContentType("application/json");
             String username = AuthFilter.authorizeUser(request, userJpaRespository);
             if (username != null) {
@@ -178,10 +188,10 @@ public class TransactionController {
                     this.response = Response.jsonString("Bad Request");
                     response.getWriter().write(this.response);
                 } else {
-                    Transaction transc = transactionJpaRepository.findOne(id);
+                    Transaction transc = transactionJpaRepository.getOne(id);
                     if (transc != null) {
                         if (transc.getUser().getUsername().equals(username)) {
-                            transactionJpaRepository.delete(id);
+                            transactionJpaRepository.deleteById(id);
                             response.setStatus(HttpServletResponse.SC_OK);
                             this.response = Response.jsonString("Deleted");
                             response.getWriter().write(this.response);

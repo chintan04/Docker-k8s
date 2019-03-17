@@ -1,0 +1,31 @@
+---
+
+- name: Installing grafana
+  shell: helm install --name grafana stable/grafana --set persistence.enabled=true
+
+- name: Validating grafana
+  command: kubectl get deployment grafana
+  register: result
+  until: result.stdout.find("1/1") != -1
+  retries: 10
+  delay: 10
+
+- name: Exporting Pod name
+  shell: kubectl get pods --namespace default -l "app=grafana,release=grafana" -o jsonpath="{.items[0].metadata.name}"
+  register: grafpodName
+
+- debug: var=grafpodName.stdout_lines[0]
+
+- name: Expose grafana
+  shell:  nohup kubectl --namespace default port-forward {{grafpodName.stdout_lines[0]}} 3000 >/dev/null 2>&1 &
+
+
+- name: Getting the login password for user admin
+  shell: kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+  register: grafpwd
+
+- debug: var=grafpwd.stdout_lines[0]
+
+- include_tasks: roles/helm/grafana/tasks/grafana_datasources.yaml
+
+- include_tasks: roles/helm/grafana/tasks/grafana_dashboard.yaml

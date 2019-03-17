@@ -1,0 +1,36 @@
+---
+
+
+# Gather facts about all ELBs
+
+- name: Get load_balancer endpoint
+  shell: kubectl get svc -o=json --field-selector=metadata.name=csye7374-elb | jq '.items[].status.loadBalancer.ingress[].hostname'
+  register: elb_endpoint
+
+- debug:
+     msg: "{{elb_endpoint.stdout}}"
+
+- name: Set load_balancer endpoint for prometheus config
+  register: prom_config
+  shell: sed 's/elb_endpoint/{{elb_endpoint.stdout}}/g' roles/helm/prometheus/tasks/values_template.yaml > roles/helm/prometheus/tasks/values.yaml 
+
+- name: Installing prometheus
+  shell: helm install --name prometheus -f roles/helm/prometheus/tasks/values.yaml stable/prometheus
+
+- name: Validating prometheus
+  command: kubectl get deployment prometheus-server
+  register: result
+  until: result.stdout.find("2/2") != -1
+  retries: 10
+  delay: 20
+  ignore_errors: yes
+
+- name: Exporting Pod name
+  shell: kubectl get pods --namespace default -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}"
+  register: prompodName
+
+- debug: var=prompodName.stdout_lines[0]
+
+
+- name: Expose prometheus
+  shell:  nohup kubectl --namespace default port-forward {{prompodName.stdout_lines[0]}} 9090 >/dev/null 2>&1 &

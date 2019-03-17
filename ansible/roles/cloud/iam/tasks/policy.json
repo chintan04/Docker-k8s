@@ -16,7 +16,7 @@
           "Sid": "VisualEditor1",
           "Effect": "Allow",
           "Action": "s3:*",
-          "Resource": "arn:aws:s3:::webapp-csye7374-shahhi"
+          "Resource": "arn:aws:s3:::webapp-csye7374-shahc"
       }
   ]
 }

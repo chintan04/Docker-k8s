@@ -1,0 +1,14 @@
+---
+
+- debug: var=grafpwd.stdout_lines[0]
+
+- name: Adding prometheus datasource
+  grafana_datasource:
+    name: "Prometheus"
+    grafana_url: "http://localhost:3000"
+    grafana_user: "admin"
+    grafana_password: "{{grafpwd.stdout_lines[0]}}"
+    ds_type: "prometheus"
+    url: "http://localhost:9090"
+    access: "direct"
+

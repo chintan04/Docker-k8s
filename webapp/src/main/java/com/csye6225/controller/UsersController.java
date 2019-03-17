@@ -5,9 +5,11 @@ import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.csye6225.aws.AwsS3Client;
+import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Users;
 import com.csye6225.repository.UserJpaRespository;
+import io.micrometer.core.instrument.Metrics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
@@ -22,6 +24,8 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import com.timgroup.statsd.StatsDClient;
 import com.timgroup.statsd.NonBlockingStatsDClient;
@@ -43,6 +47,9 @@ public class UsersController {
 
     private static int counter = 0;
 
+    LogManager logManager = LogManager.getLogManager();
+    Logger log = logManager.getLogger(this.getClass().getName());
+
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public void register(@RequestBody Users user, HttpServletResponse response) {
@@ -50,6 +57,8 @@ public class UsersController {
             counter++;
             statsd.incrementCounter("endpoint.register.http.post");
             System.out.println(counter);
+            Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             response.setContentType("application/json");
             if (!user.getUsername().matches("^(.+)@(.+)\\.(.+)$")) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -85,6 +94,8 @@ public class UsersController {
             counter++;
             statsd.incrementCounter("endpoint.time.http.get");
             System.out.println(counter);
+            Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             response.setContentType("application/json");
             final String authorization = httpRequest.getHeader("Authorization");
             if (authorization != null && authorization.toLowerCase().startsWith("basic")) {
@@ -121,8 +132,11 @@ public class UsersController {
     @ResponseBody
     public void getping(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
+            Prometheus.increment();
+            Metrics.counter("User.Controller").increment();
             this.response = Response.jsonString("pong");
             response.getWriter().write(this.response);
+            log.info("Successful ping msg");
         } catch (Exception ex) {
 
         }
@@ -134,8 +148,10 @@ public class UsersController {
         try {
             statsd.incrementCounter("endpoint.reset.http.post");
             response.setContentType("application/json");
-            Users userobj = userJpaRespository.findOne(user.getUsername());
+            Metrics.counter("User.Controller").increment();
+            Users userobj = userJpaRespository.getOne(user.getUsername());
             if (userobj != null) {
+                Prometheus.increment();
                 System.out.println("try - " + user.getUsername());
                 AmazonSNS amazonSNS = AmazonSNSClientBuilder.defaultClient();
                 System.out.println("Getting ARN........");
@@ -166,7 +182,7 @@ public class UsersController {
     @ResponseBody
     public void getliveness(HttpServletRequest httpRequest, HttpServletResponse response) {
         try {
-            userJpaRespository.findOne("test");
+            userJpaRespository.getOne("test");
 
             String BUCKET_NAME =env.getProperty("bucketName");
             System.out.println(BUCKET_NAME+" :bucket name");

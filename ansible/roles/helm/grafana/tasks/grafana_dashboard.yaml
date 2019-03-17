@@ -1,0 +1,24 @@
+---
+
+- debug: var=grafpwd.stdout_lines[0]
+
+- name: Export dashboard
+  grafana_dashboard:
+    grafana_url: "http://localhost:3000"
+    grafana_user: "admin"
+    grafana_password: "{{grafpwd.stdout_lines[0]}}"
+    state: present
+    overwrite: yes
+    uid: "1-kubernetes-deployment-statefulset-daemonset-metrics_rev1"
+    path: "roles/helm/grafana/tasks/json_templates/1-kubernetes-deployment-statefulset-daemonset-metrics_rev1.json"
+    
+- name: Export dashboard
+  grafana_dashboard:
+    grafana_url: "http://localhost:3000"
+    grafana_user: "admin"
+    grafana_password: "{{grafpwd.stdout_lines[0]}}"
+    
+    state: present
+    overwrite: yes
+    path: "roles/helm/grafana/tasks/json_templates/spring-boot-statistics_rev2.json"
+    
