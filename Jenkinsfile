@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withCredentials([file(credentialsId: 'jenkins')]){
+        withCredentials([file(credentialsId: 'jenkins1')]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
           extras: "--vault-password-file ''"
