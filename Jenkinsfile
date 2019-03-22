@@ -9,12 +9,7 @@ pipeline {
     stage('Build') {
       steps {
         dir("/ansible") {
-                    ansiblePlaybook([
-                            inventory   : 'hosts',
-                            playbook    : 'k8s-dockerFile.yaml',
-                            installation: 'ansible',
-                            colorized   : true
-                        ])
+                   sh ansible-playbook k8s-dockerFile.yaml
                      }
       }
     }
