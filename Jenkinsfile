@@ -8,12 +8,17 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withCredentials([file(credentialsId: 'jenkins1' )]){
-          ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
-          hostKeyChecking: false
-          }
+        dir("/ansible") {
+                    ansiblePlaybook([
+                            inventory   : 'hosts',
+                            playbook    : 'k8s-dockerFile.yaml',
+                            installation: 'ansible',
+                            colorized   : true
+                        ])
+                     }
       }
     }
   }
 }
 
+ 
