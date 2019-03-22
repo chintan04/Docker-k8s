@@ -7,7 +7,7 @@ pipeline {
       }
     }
     stage('Build') {
-      node {
+      steps {
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml'
     }
       }
