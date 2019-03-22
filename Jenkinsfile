@@ -6,7 +6,9 @@ pipeline {
         sh 'ls -la' 
       }
     }
-    ansiblePlaybook( 
+    stage('Build') {
+       ansiblePlaybook( 
         playbook: 'ansible/k8s-dockerFile.yaml'    )
+    }
   }
 }
