@@ -6,9 +6,11 @@ pipeline {
         sh 'ls -la' 
       }
     }
-    ansiColor('xterm') {
-       ansiblePlaybook( 
-        playbook: 'ansible/k8s-dockerFile.yaml'    )
+    stage('Build') {
+      node {
+          ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml'
     }
+      }
+       
   }
 }
