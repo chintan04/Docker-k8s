@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withEnv(){
+        withEnv(["ARTIFACT_URL=TEST"]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml'
           }
       }
