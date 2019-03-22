@@ -1,14 +1,9 @@
 pipeline {
   agent any
   stages {
-    stage('myStage'){
+    stage('build and push'){
       steps {
-        sh 'ls -la' 
-      }
-    }
-    stage('Build') {
-      steps { 
-        sh 'ls' 
+        ansible-playbook ansible/k8s-dockerFile.yaml
       }
     }
   }
