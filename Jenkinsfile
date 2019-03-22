@@ -6,7 +6,7 @@ pipeline {
         sh 'ls -la' 
       }
     }
-    stage('Build') {
+    ansiColor('xterm') {
        ansiblePlaybook( 
         playbook: 'ansible/k8s-dockerFile.yaml'    )
     }
