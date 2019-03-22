@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withEnv(["ARTIFACT_URL=TEST"]){
+        withCredewithEnvntials([file(credentialsId: 'chintan04' )]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml'
           }
       }
