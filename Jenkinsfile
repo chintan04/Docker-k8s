@@ -8,12 +8,12 @@ pipeline {
     }
     stage('Build') {
       steps {
-        dir("/ansible") {
-                   sh ansible-playbook k8s-dockerFile.yaml
-                     }
+        withCredentials([file(credentialsId: 'jenkins1']){
+          ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
+          hostKeyChecking: false,
+          credentialsId: 'jenkins1'
+          }
       }
     }
   }
 }
-
- 
