@@ -12,7 +12,7 @@ pipeline {
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
        
-      }
+      
     }
   }
 }
