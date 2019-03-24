@@ -1,19 +1,17 @@
-pipeline {
-  agent any
-  stages {
-    stage('myStage'){
-      steps {
-        sh 'ls -la' 
-      }
-    }
-    stage('Build') {
-      steps {
-        withCredentials([file(credentialsId: 'jenkins1')]){
-          ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
-          hostKeyChecking: false,
-          extras: "--vault-password-file ''"
-          }
-      }
-    }
+node {
+  stage('Init') {
+    checkout scm
+          sh 'ls -al'
+          sh 'pwd'
+          sh 'cd ansible'
+          sh 'pwd'
   }
+}
+
+  node {
+          ansiblePlaybook( 
+                  installation: 'ansible',
+        playbook: 'ansible/k8s-dockerFile.yaml',
+          inventory: 'ansible')
+        
 }
