@@ -25,6 +25,7 @@ node {
   stage('Init') {
     checkout scm
   }
+}
 
   node {
           ansiblePlaybook( 
