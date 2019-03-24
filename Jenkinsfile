@@ -7,6 +7,10 @@ node {
           sh 'pwd'
           sh 'cd ansible'
           sh 'pwd'
+          sh 'su jenkins'
+          sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
+         ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
+
           
   }
 }
