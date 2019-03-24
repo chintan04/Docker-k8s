@@ -24,6 +24,8 @@
 node {
   stage('Init') {
     checkout scm
+          sh 'ls -al'
+          sh 'pwd'
   }
 }
 
