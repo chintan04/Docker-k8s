@@ -29,6 +29,6 @@ node {
 
   node {
           ansiblePlaybook( 
-        playbook: '../ansible/k8s-dockerFile.yaml')
+        playbook: 'ansible/k8s-dockerFile.yaml')
         
             }
