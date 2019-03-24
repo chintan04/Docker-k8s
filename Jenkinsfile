@@ -8,11 +8,11 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withCredentials([file(credentialsId: 'github3')]){
+       // withCredentials([file(credentialsId: 'github3')]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
           extras: "--vault-password-file ''"
-          }
+         // }
       }
     }
   }
