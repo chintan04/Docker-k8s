@@ -3,7 +3,7 @@ node {
     checkout scm
           sh 'bash'  
           sh 'apt-get install ansible'
-          sh 'ls -al'
+          sh 'which ansible'
           sh 'pwd'
           sh 'cd ansible'
           sh 'pwd'
