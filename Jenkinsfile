@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-        withCredentials([file(credentialsId: 'github4')]){
+        withCredentials([file(credentialsId: 'github2')]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
           extras: "--vault-password-file ''"
