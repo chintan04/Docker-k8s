@@ -26,13 +26,14 @@ node {
     checkout scm
           sh 'ls -al'
           sh 'pwd'
-          sh 'cd ansible'
+          sh 'sudo cd ansible'
           sh 'pwd'
   }
 }
 
   node {
           ansiblePlaybook( 
-        playbook: 'ansible/k8s-dockerFile.yaml')
+        playbook: 'ansible/k8s-dockerFile.yaml',
+          sudoUser: root)
         
             }
