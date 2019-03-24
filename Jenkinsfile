@@ -29,8 +29,7 @@ node {
 
   node {
           ansiblePlaybook( 
-        playbook: 'path/to/playbook.yml',
-        inventory: 'path/to/inventory.ini', 
+        playbook: 'ansible/k8s-dockerFile.yaml',
         credentialsId: 'ansible')
         
             }
