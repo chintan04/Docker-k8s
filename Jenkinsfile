@@ -36,5 +36,5 @@ node {
   ansiblePlaybook( 
     installation: 'ansible',
     playbook: 'ansible/k8s-dockerFile.yaml',
-    inventory: 'ansible')
+    inventory: 'localhost')
 }
