@@ -29,7 +29,6 @@ node {
 
   node {
           ansiblePlaybook( 
-        playbook: '/ansible/k8s-dockerFile.yaml',
-        credentialsId: 'ansible')
+        playbook: '/ansible/k8s-dockerFile.yaml')
         
             }
