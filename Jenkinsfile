@@ -11,8 +11,7 @@ pipeline {
         withCredentials([file(credentialsId: 'jenkins1')]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
-          
-          }
+       
       }
     }
   }
