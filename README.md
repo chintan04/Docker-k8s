@@ -1,5 +1,6 @@
 # CSYE 7374 - Spring 2019
 
+
 ## Getting Started
 
 1. Change the cluster name and state store located under "groups_vars/all/vars.yaml"
