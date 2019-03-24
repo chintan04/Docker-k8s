@@ -150,6 +150,7 @@ Master:
     
     
     
+    
   # Enable to always override the installed plugins with the values of 'Master.InstallPlugins' on upgrade or redeployment.
   # OverwritePlugins: true
   # Enable HTML parsing using OWASP Markup Formatter Plugin (antisamy-markup-formatter), useful with ghprb plugin.
@@ -189,6 +190,15 @@ Master:
       welcome-message: |
         jenkins:
           systemMessage: Welcome to our CI\CD server.  This Jenkins is configured and managed 'as code'.
+        # credentials:
+        #   system:
+        #     domainCredentials:
+        #       - credentials:
+        #           - usernamePassword:
+        #               scope:    SYSTEM
+        #               id:       github-user
+        #               username: chintan04
+        #               password: Test123
 
   Sidecars:
     configAutoReload:
