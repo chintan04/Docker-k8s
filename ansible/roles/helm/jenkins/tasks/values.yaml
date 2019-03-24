@@ -145,16 +145,10 @@ Master:
     - credentials-binding:1.17
     - git:3.9.3
     - ansible:1.0
-    - build-timeout:1.19
-    - github-branch-source:2.4.2
-    - workflow:workflow-step-api:1.14.2
-    - gradle-plugin:1.31
-    - lib:dry-run-lib:0.1
-    - ldap:1.20
-    - workflow-aggregator:2.6
-    - pipeline-github-lib:1.0
-    - ssh-slaves:1.29.4
-    - timestamper:1.9
+    - github-oauth:0.31
+    - github-pullrequest:0.2.4
+    
+    
     
   # Enable to always override the installed plugins with the values of 'Master.InstallPlugins' on upgrade or redeployment.
   # OverwritePlugins: true
