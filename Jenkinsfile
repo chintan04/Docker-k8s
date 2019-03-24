@@ -12,7 +12,7 @@ pipeline {
           ansiblePlaybook( 
         playbook: 'path/to/playbook.yml',
         inventory: 'path/to/inventory.ini', 
-        credentialsId: 'ansible'
+        credentialsId: 'ansible')
         
             }
             }
