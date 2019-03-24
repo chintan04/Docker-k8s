@@ -40,7 +40,20 @@
         
       //      }
 node {
-    docker.image('alpine:latest').inside {
-        sh 'echo Hello World!'
+
+    /* The first stage clones our code repository */
+    stage('Clone repository') {
+        checkout scm
     }
+
+    /* The second stage runs Maven to package the app */
+    stage('Package') {
+        sh 'mvn package'
+    }
+
+    /* The final stage runs Maven to deploy the JAR into a repository */
+    stage('Deploy') {
+        sh 'mvn deploy'
+    }
+
 }
