@@ -34,7 +34,7 @@ node {
   node {
           ansiblePlaybook( 
                   installation: 'ansible',
-        playbook: 'k8s-dockerFile.yaml',
+        playbook: 'ansible/k8s-dockerFile.yaml',
           inventory: 'ansible')
         
             }
