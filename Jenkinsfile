@@ -33,7 +33,6 @@ node {
 
   node {
           ansiblePlaybook( 
-        playbook: 'ansible/k8s-dockerFile.yaml',
-          sudoUser: root)
+        playbook: '/ansible/k8s-dockerFile.yaml')
         
             }
