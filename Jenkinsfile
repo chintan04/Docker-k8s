@@ -8,15 +8,16 @@ pipeline {
     }
     stage('Ansible Init') {
             steps {
-                script {
-                
-               def tfHome = tool name: 'Ansible'
-                env.PATH = "${tfHome}:${env.PATH}"
-                 sh 'ansible --version'
-                    
+                node {
+          ansiblePlaybook( 
+        playbook: 'path/to/playbook.yml',
+        inventory: 'path/to/inventory.ini', 
+        credentialsId: 'ansible', 
+        
             }
             }
         }
         
   }
 }
+            }
