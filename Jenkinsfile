@@ -39,15 +39,8 @@
        //   inventory: 'ansible')
         
       //      }
-pipeline {
-    agent {
-        docker { image 'node:7-alpine' }
-    }
-    stages {
-        stage('Test') {
-            steps {
-                sh 'node --version'
-            }
-        }
+node {
+    docker.image('alpine:latest').inside {
+        sh 'echo Hello World!'
     }
 }
