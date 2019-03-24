@@ -26,7 +26,7 @@ node {
     checkout scm
           sh 'ls -al'
           sh 'pwd'
-          sh 'sudo cd ansible'
+          sh 'cd ansible'
           sh 'pwd'
   }
 }
