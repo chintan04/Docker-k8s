@@ -25,12 +25,13 @@ podTemplate(label: 'mypod', containers: [
        //   sh 'apt update'
         //  sh 'apt-cache policy docker-ce'
         //  sh 'apt install docker-ce -y'
-        //  sh 'apt install maven -y'
+          sh 'apt install maven -y'
+          sh 'mvn install'
        container('docker') {
             git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
             sh "ls -al"
            // sh "aws ecr get-login --no-include-email --region us-east-1"
-            sh "docker build ./webapp -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:${env.BUILD_NUMBER} "
+            sh "docker build ./webapp -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
          // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
