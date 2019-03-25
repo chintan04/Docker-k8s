@@ -1,7 +1,7 @@
 node {
   stage('Init') {
     checkout scm
-          sh 'apt-get update'  
+          sh 'apt-get update -y'  
           sh 'apt-get install ansible'
           sh 'which ansible'
           sh 'pwd'
