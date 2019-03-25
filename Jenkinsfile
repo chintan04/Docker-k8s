@@ -1,5 +1,7 @@
 node{
     stage('Init'){
+            checkout scm
+
           sh "apt-get update -y"  
           sh 'apt install maven -y'
           sh 'mvn -f webapp/ install'
