@@ -47,7 +47,13 @@ podTemplate(label: 'mypod', containers: [
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
        } 
+      
   }
+              stage('Update Kubernetes') {
+            container('kubectl') {
+                sh "kubectl rolling-update csye7374-app-rc --image ${env.DOCKER_HUB_USER}/csye7374:${env.BUILD_NUMBER}"
+            }
+}
 }
 }
   node {
