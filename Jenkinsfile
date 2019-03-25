@@ -9,7 +9,7 @@ podTemplate(label: 'mypod', containers: [
   node('mypod') {
   stage('Init') {
     //checkout scm
-          sh "apt-get update -y"  
+       //   sh "apt-get update -y"  
       //    sh 'apt-get install ansible -y'
       //    sh 'which ansible'
       //    sh 'pwd'
@@ -25,7 +25,7 @@ podTemplate(label: 'mypod', containers: [
        //   sh 'apt update'
         //  sh 'apt-cache policy docker-ce'
         //  sh 'apt install docker-ce -y'
-          sh 'apt install maven -y'
+        //  sh 'apt install maven -y'
           sh 'mvn install'
        container('docker') {
             git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
