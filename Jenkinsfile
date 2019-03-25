@@ -51,11 +51,10 @@ podTemplate(label: 'mypod', containers: [
   }
               stage('Update Kubernetes') {
             container('kubectl') {
-                          docker.withRegistry("https://757638245294.dkr.ecr.us-east-1.amazonaws.com", 'ecr:us-east-1:aws') {
 
                 sh "kubectl rolling-update csye7374-rc --image 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
             }
-            }
+            
 }
 }
 }
