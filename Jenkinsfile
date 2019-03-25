@@ -112,10 +112,10 @@ podTemplate(label: 'mypod', containers: [
        container('docker') {
             //git credentialsId: 'git', url: 'https://github.com/chintan04/csye7374-spring2019'
             sh "ls -al"
-            sh "cd webapp"
-            sh "ls -al"
+            sh "cd webapp && ls -al"
+            
            // sh "aws ecr get-login --no-include-email --region us-east-1"
-            sh "docker build . -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
+            sh "docker build ./webapp -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
          // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
