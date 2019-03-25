@@ -1,3 +1,11 @@
+node{
+    stage('Init){
+          sh "apt-get update -y"  
+          sh 'apt install maven -y'
+          sh 'mvn install'
+
+          }
+}
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true),
@@ -26,7 +34,7 @@ podTemplate(label: 'mypod', containers: [
         //  sh 'apt-cache policy docker-ce'
         //  sh 'apt install docker-ce -y'
         //  sh 'apt install maven -y'
-          sh 'mvn install'
+         // sh 'mvn install'
        container('docker') {
             git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
             sh "ls -al"
