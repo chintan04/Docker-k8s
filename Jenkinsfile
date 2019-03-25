@@ -2,8 +2,7 @@ node{
     stage('Init'){
           sh "apt-get update -y"  
           sh 'apt install maven -y'
-          sh 'cd webapp'
-          sh 'mvn install'
+          sh 'mvn -f webapp/ install'
 
           }
 }
