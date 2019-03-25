@@ -25,7 +25,7 @@ podTemplate(label: 'mypod', containers: [
           sh 'apt update'
           sh 'apt-cache policy docker-ce'
           sh 'apt install docker-ce -y'
-          sh 'systemctl status docker'
+         // sh 'systemctl status docker'
           sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
 
