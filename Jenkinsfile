@@ -69,15 +69,7 @@
     }
 }*/
 //============================================================================================
-node{
-    stage('Init'){
-            checkout scm
-          sh "apt-get update -y"  
-          sh 'apt install maven -y'
-          sh 'mvn -f webapp/ install'
 
-          }
-}
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true),
@@ -87,6 +79,13 @@ podTemplate(label: 'mypod', containers: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
   ]) {
   node('mypod') {
+           stage('maven'){
+            checkout scm
+          sh "apt-get update -y"  
+          sh 'apt install maven -y'
+          sh 'mvn -f webapp/ install'
+
+          }
   stage('Init') {
     //checkout scm
        //   sh "apt-get update -y"  
