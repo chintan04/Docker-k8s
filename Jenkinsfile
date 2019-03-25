@@ -44,7 +44,7 @@ pipeline {
     tools { 
          maven 'Maven' 
          
-         ansible 'Ansible'
+         "org.jenkinsci.plugins.ansible.AnsibleInstallation" 'Ansible'
             
     }
     stages {
