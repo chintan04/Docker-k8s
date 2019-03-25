@@ -43,8 +43,8 @@ pipeline {
     agent any
     tools { 
          maven 'Maven' 
-         org.jenkinsci.plugins.docker.commons.tools.DockerTool 
-         org.jenkinsci.plugins.ansible.AnsibleInstallation 
+         
+         //org.jenkinsci.plugins.ansible.AnsibleInstallation 
             
     }
     stages {
@@ -53,7 +53,7 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "docker ps"
+                    echo "which ansible"
                     echo "ansible --version"
                 ''' 
             }
