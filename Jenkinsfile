@@ -1,46 +1,45 @@
-// pipeline {
-//   agent any
-//   stages {
-//     stage('myStage'){
-//       steps {
-//         sh 'ls -la' 
-//       }
-//     }
-//     stage('Ansible Init') {
-//             steps {
-//                 node {
-//           ansiblePlaybook( 
-//         playbook: 'path/to/playbook.yml',
-//         inventory: 'path/to/inventory.ini', 
-//         credentialsId: 'ansible')
-        
-//             }
-//             }
-//         }
-        
-//   }
-// }
-      
+//node {
+//  stage('Init') {
+//    checkout scm
+//          sh 'ls -al'
+//          sh 'pwd'
+//          sh 'cd ansible'
+//          sh 'pwd'
+//  }
+//}
 
-// node {
-//   stage('Init') {
-//     checkout scm
-//           sh 'ls -al'
-//           sh 'pwd'
-//           sh 'cd ansible'
-//           sh 'pwd'
-//   }
-// }
+  //node {
+    //      ansiblePlaybook( 
+     //             installation: 'ansible',
+      //  playbook: 'ansible/k8s-dockerFile.yaml',
+       //   inventory: 'ansible')
+        
+      //      }
+pipeline {
+    agent any
+    tools { 
+         maven 'Maven' 
+         org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
+            
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                    checkout scm
+                    sh 'ls -al'
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                    cd webapp && mvn clean package
+                ''' 
+            }
+        }
 
-// node {
-//   ansiblePlaybook( 
-//     installation: 'ansible',
-//     playbook: 'ansible/k8s-dockerFile.yaml',
-//     inventory: 'localhost')
-// }
-node('docker') {
-  docker.image('maven').inside {
-     git 'https://github.com/akulnigam/csye7374-spring2019'
-     sh 'mvn clean install'
-  }
+        stage ('Build') {
+            steps {
+                    sh 'docker build --no-cache -t csye7374'
+                echo 'This is a minimal pipeline.'
+            }
+        }
+    }
 }
