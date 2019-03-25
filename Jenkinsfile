@@ -41,7 +41,7 @@ podTemplate(label: 'mypod', containers: [
           //  git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
             sh "ls -al"
            // sh "aws ecr get-login --no-include-email --region us-east-1"
-            sh "docker build ./webapp --target webapp/target -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
+            sh "docker build ./webapp  -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
             sh "docker push 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
            // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
@@ -51,7 +51,7 @@ podTemplate(label: 'mypod', containers: [
   }
               stage('Update Kubernetes') {
             container('kubectl') {
-                sh "kubectl rolling-update csye7374-rc --image ${env.DOCKER_HUB_USER}/csye7374:${env.BUILD_NUMBER}"
+                sh "kubectl rolling-update csye7374-rc --image 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
             }
 }
 }
