@@ -37,6 +37,7 @@ podTemplate(label: 'mypod', containers: [
         //  sh 'apt install maven -y'
          // sh 'mvn install'
        container('docker') {
+          docker.withRegistry("https://757638245294.dkr.ecr.us-east-1.amazonaws.com", 'ecr:us-east-1:aws') {
           //  git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
             sh "ls -al"
            // sh "aws ecr get-login --no-include-email --region us-east-1"
@@ -45,7 +46,7 @@ podTemplate(label: 'mypod', containers: [
            // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
-          
+       } 
   }
 }
 }
