@@ -115,8 +115,11 @@ podTemplate(label: 'mypod', containers: [
             sh "cd webapp && ls -al"
             
            // sh "aws ecr get-login --no-include-email --region us-east-1"
-            sh "docker build ./webapp -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
-               sh "docker push 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
+            sh "docker build ./webapp -t 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
+              docker.withRegistry('https://557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:ecr-credentials') {
+                         docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374').push('latest')
+                 }
+//               sh "docker push 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
          // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
