@@ -9,7 +9,7 @@ podTemplate(label: 'mypod', containers: [
   node('mypod') {
   stage('Init') {
     //checkout scm
-          sh 'apt-get update -y'  
+          sh "apt-get update -y"  
       //    sh 'apt-get install ansible -y'
       //    sh 'which ansible'
       //    sh 'pwd'
