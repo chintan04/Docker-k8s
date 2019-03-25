@@ -43,8 +43,8 @@ pipeline {
     agent any
     tools { 
          maven 'Maven' 
-         org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
-         org.jenkinsci.plugins.ansible.AnsibleInstallation 'Ansible'
+         org.jenkinsci.plugins.docker.commons.tools.DockerTool 
+         org.jenkinsci.plugins.ansible.AnsibleInstallation 
             
     }
     stages {
