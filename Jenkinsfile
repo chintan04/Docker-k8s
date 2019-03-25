@@ -10,6 +10,14 @@ node {
           sh 'su jenkins'
           sh 'apt install python3-pip -y'
           sh 'pip3 install awscli'
+          sh 'apt update'
+          sh 'apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common'
+          sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
+          sh 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"'
+          sh 'apt update'
+          sh 'apt-cache policy docker-ce'
+          sh 'apt install docker-ce'
+          sh 'systemctl status docker'
           sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
 
