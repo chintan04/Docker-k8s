@@ -43,8 +43,6 @@ pipeline {
     agent any
     tools { 
          maven 'Maven' 
-         
-         "org.jenkinsci.plugins.ansible.AnsibleInstallation" 'Ansible'
             
     }
     stages {
@@ -53,7 +51,7 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    sh 'ansible --version'
+                    sh 'cd webapp && mvn clean package'
                 ''' 
             }
         }
