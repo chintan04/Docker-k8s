@@ -26,9 +26,10 @@ podTemplate(label: 'mypod', containers: [
           sh 'apt-cache policy docker-ce'
           sh 'apt install docker-ce -y'
           sh 'apt install maven -y'
+       container('docker') {
           sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
-
+       }
           
   }
 }
