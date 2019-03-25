@@ -43,7 +43,7 @@ pipeline {
     agent any
     tools { 
          maven 'Maven' 
-         docker 'Docker'
+         org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
             
     }
     stages {
