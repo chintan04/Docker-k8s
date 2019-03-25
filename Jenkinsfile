@@ -8,26 +8,30 @@ podTemplate(label: 'mypod', containers: [
   ]) {
   node('mypod') {
   stage('Init') {
-    checkout scm
-          sh 'apt-get update -y'  
-          sh 'apt-get install ansible -y'
-          sh 'which ansible'
-          sh 'pwd'
-          sh 'cd ansible'
-          sh 'pwd'
+    //checkout scm
+      //    sh 'apt-get update -y'  
+      //    sh 'apt-get install ansible -y'
+      //    sh 'which ansible'
+      //    sh 'pwd'
+      //    sh 'cd ansible'
+      //    sh 'pwd'
        //   sh 'su jenkins'
-          sh 'apt install python3-pip -y'
-          sh 'pip3 install awscli'
+       //   sh 'apt install python3-pip -y'
+       //   sh 'pip3 install awscli'
        //   sh 'apt update'
        //   sh 'apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y'
        //   sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
        //   sh 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"'
-          sh 'apt update'
+       //   sh 'apt update'
         //  sh 'apt-cache policy docker-ce'
         //  sh 'apt install docker-ce -y'
-          sh 'apt install maven -y'
+        //  sh 'apt install maven -y'
        container('docker') {
-          sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
+            git credentialsId: 'github1', url: 'https://github.com/flyingnnn/csye7374-fall2018'
+            sh "ls -al"
+            sh "$(aws ecr get-login --no-include-email --region us-east-1)"
+            sh "docker build ./webapp -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:${env.BUILD_NUMBER} "
+         // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
         // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
        }
           
