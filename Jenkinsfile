@@ -44,7 +44,7 @@ pipeline {
     tools { 
          maven 'Maven' 
          
-         //org.jenkinsci.plugins.ansible.AnsibleInstallation 
+         ansible 'Ansible'
             
     }
     stages {
@@ -53,7 +53,6 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    sh 'which ansible'
                     sh 'ansible --version'
                 ''' 
             }
