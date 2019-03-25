@@ -1,5 +1,5 @@
 node{
-    stage('Init){
+    stage('Init'){
           sh "apt-get update -y"  
           sh 'apt install maven -y'
           sh 'mvn install'
