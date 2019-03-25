@@ -39,21 +39,26 @@
        //   inventory: 'ansible')
         
       //      }
-node {
-
-    /* The first stage clones our code repository */
-    stage('Clone repository') {
-        checkout scm
+pipeline {
+    agent any
+    tools { 
+        maven 'Maven 3.3.9' 
+        jdk 'jdk8' 
     }
+    stages {
+        stage ('Initialize') {
+            steps {
+                sh '''
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                ''' 
+            }
+        }
 
-    /* The second stage runs Maven to package the app */
-    stage('Package') {
-        sh 'mvn package'
+        stage ('Build') {
+            steps {
+                echo 'This is a minimal pipeline.'
+            }
+        }
     }
-
-    /* The final stage runs Maven to deploy the JAR into a repository */
-    stage('Deploy') {
-        sh 'mvn deploy'
-    }
-
 }
