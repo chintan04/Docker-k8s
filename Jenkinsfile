@@ -53,8 +53,8 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "which ansible"
-                    echo "ansible --version"
+                    sh 'which ansible'
+                    sh 'ansible --version'
                 ''' 
             }
         }
