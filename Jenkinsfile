@@ -108,7 +108,7 @@ podTemplate(label: 'mypod', containers: [
   }
           stage('Update Kubernetes') {
             container('kubectl') {
-                sh "kubectl rolling-update csye7374-app-rc --image ${env.DOCKER_HUB_USER}/csye7374:${env.BUILD_NUMBER}"
+                sh "kubectl rolling-update csye7374-rc --image 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
             }
 }
 }
