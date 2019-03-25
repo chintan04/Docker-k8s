@@ -18,7 +18,7 @@ podTemplate(label: 'mypod', containers: [
   ]) {
   node('mypod') {
   stage('Init') {
-    checkout scm
+   // checkout scm
        //   sh "apt-get update -y"  
       //    sh 'apt-get install ansible -y'
       //    sh 'which ansible'
@@ -38,7 +38,7 @@ podTemplate(label: 'mypod', containers: [
         //  sh 'apt install maven -y'
          // sh 'mvn install'
        container('docker') {
-            git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
+          //  git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
             sh "ls -al"
            // sh "aws ecr get-login --no-include-email --region us-east-1"
             sh "docker build ./webapp --target webapp/target -t 757638245294.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
