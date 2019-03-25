@@ -69,26 +69,15 @@
     }
 }*/
 //============================================================================================
-       pipeline {
-    agent any
-    tools { 
-         maven 'Maven' 
-        // org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
-            
-    }
-    stages {
-        stage ('Initialize') {
-            steps {
-                    checkout scm
-                    sh 'ls -al'
-                sh '''
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                    cd webapp && mvn clean package
-                ''' 
-            }
-        }
-    }
+
+node{
+    stage('Init'){
+          sh "apt-get update -y"  
+          sh 'apt install maven -y'
+          sh 'mvn -f webapp/ install'
+
+          }
+}
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true),
