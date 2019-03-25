@@ -49,10 +49,11 @@ pipeline {
         stage ('Initialize') {
             steps {
                     checkout scm
+                    sh 'ls -al'
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    sh 'cd webapp && mvn clean package'
+                    cd webapp && mvn clean package
                 ''' 
             }
         }
