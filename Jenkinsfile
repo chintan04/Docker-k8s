@@ -43,6 +43,8 @@ pipeline {
     agent any
     tools { 
          maven 'Maven' 
+         docker 'Docker'
+         ansible 'Ansible'
             
     }
     stages {
@@ -51,6 +53,8 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
+                    echo "docker ps"
+                    echo "ansible --version"
                 ''' 
             }
         }
