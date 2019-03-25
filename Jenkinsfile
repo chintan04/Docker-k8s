@@ -69,7 +69,6 @@
     }
 }*/
 //============================================================================================
-
 node{
     stage('Init'){
           sh "apt-get update -y"  
@@ -126,9 +125,6 @@ podTemplate(label: 'mypod', containers: [
           inventory: 'ansible')
         
 }
-
-
-       }
 
 
 
