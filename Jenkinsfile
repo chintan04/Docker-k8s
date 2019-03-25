@@ -90,25 +90,6 @@ podTemplate(label: 'mypod', containers: [
         }
 
   stage('Init') {
-    //checkout scm
-       //   sh "apt-get update -y"  
-      //    sh 'apt-get install ansible -y'
-      //    sh 'which ansible'
-      //    sh 'pwd'
-      //    sh 'cd ansible'
-      //    sh 'pwd'
-       //   sh 'su jenkins'
-       //   sh 'apt install python3-pip -y'
-       //   sh 'pip3 install awscli'
-       //   sh 'apt update'
-       //   sh 'apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y'
-       //   sh 'curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -'
-       //   sh 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"'
-       //   sh 'apt update'
-        //  sh 'apt-cache policy docker-ce'
-        //  sh 'apt install docker-ce -y'
-        //  sh 'apt install maven -y'
-         // sh 'mvn install'
        container('docker') {
             //git credentialsId: 'git', url: 'https://github.com/chintan04/csye7374-spring2019'
             sh "ls -al"
@@ -125,15 +106,12 @@ podTemplate(label: 'mypod', containers: [
        }
           
   }
+          stage('Update Kubernetes') {
+            container('kubectl') {
+                sh "kubectl rolling-update csye7374-app-rc --image ${env.DOCKER_HUB_USER}/csye7374:${env.BUILD_NUMBER}"
+            }
 }
 }
-  node {
-          ansiblePlaybook( 
-                  installation: 'ansible',
-        playbook: 'ansible/k8s-dockerFile.yaml',
-          inventory: 'ansible')
-        
-}
-
+   
 
 
