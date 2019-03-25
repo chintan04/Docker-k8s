@@ -73,7 +73,7 @@
     agent any
     tools { 
          maven 'Maven' 
-         org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
+        // org.jenkinsci.plugins.docker.commons.tools.DockerTool 'Docker'
             
     }
     stages {
