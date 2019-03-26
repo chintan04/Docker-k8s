@@ -145,17 +145,8 @@ Master:
     - credentials-binding:1.17
     - git:3.9.3
     - ansible:1.0
-    - build-timeout:1.19
-    - github-branch-source:2.4.2
-    - workflow:workflow-step-api:1.14.2
-    - gradle-plugin:1.31
-    - lib:dry-run-lib:0.1
-    - ldap:1.20
-    - workflow-aggregator:2.6
-    - pipeline-github-lib:1.0
-    - ssh-slaves:1.29.4
-    - timestamper:1.9
     
+ 
   # Enable to always override the installed plugins with the values of 'Master.InstallPlugins' on upgrade or redeployment.
   # OverwritePlugins: true
   # Enable HTML parsing using OWASP Markup Formatter Plugin (antisamy-markup-formatter), useful with ghprb plugin.
@@ -174,7 +165,7 @@ Master:
   # Kubernetes secret that contains files to be put in the Jenkins 'secrets' directory,
   # useful to manage encryption keys used for credentials.xml for instance (such as
   # master.key and hudson.util.Secret)
-  # SecretsFilesSecret: jenkins-secrets
+  # SecretsFilesSecret: jenkins-secrets-secret
   # Jenkins XML job configs to provision
   # Jobs:
   #   test: |-
@@ -399,6 +390,8 @@ backup:
   # Example environment variable required for AWS credentials chain
   - name: AWS_REGION
     value: us-east-1
+  - name: ecr_repo
+    value: {{ecr_repo}}  
   resources:
     requests:
       memory: 1Gi
