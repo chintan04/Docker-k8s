@@ -27,7 +27,7 @@ podTemplate(label: 'mypod', containers: [
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployment csye7374-rc csye7374=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
+              sh "kubectl set image deployments/csye7374-rc csye7374=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
           }
       }
   }
