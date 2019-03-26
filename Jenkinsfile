@@ -27,7 +27,7 @@ podTemplate(label: 'mypod', containers: [
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl rolling-update csye7374-rc --image-pull-policy Always --image=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
+              sh "kubectl set image deployment csye7374-rc csye7374=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
           }
       }
   }
