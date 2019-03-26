@@ -16,18 +16,15 @@ podTemplate(label: 'mypod', containers: [
               }
           }
       }
-      stage('Init'){
-          docker.withRegistry("https://338969645766.dkr.ecr.us-east-1.amazonaws.com", 'ecr:us-east-1:awsid') {
-          //  git credentialsId: 'github2', url: 'https://github.com/HirenShah03/csye7374-spring2019'
-            sh "ls -al"
-           // sh "aws ecr get-login --no-include-email --region us-east-1"
-              sh "docker build ./webapp  -t 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest "
-            sh "docker push 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
-           // sh 'ansible-playbook ansible/k8s-dockerFile.yaml'
-        // ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
-       }
-       } 
-      
+      stage('Init') {
+          container('docker') {
+              sh "ls -al"
+              sh "docker build ./webapp -t 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
+              docker.withRegistry('https://338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
+                  docker.image('338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374').push('latest')
+              }
+          }
+      }
       stage('Update Kubernetes') {
           container('kubectl') {
               sh "kubectl rolling-update csye7374-rc --image-pull-policy Always --image 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest"
