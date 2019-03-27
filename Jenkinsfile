@@ -1,3 +1,8 @@
+import java.text.SimpleDateFormat
+def date = new Date()
+sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
+def image_id = sdf.format(date) + "_" + "${BUILD_NUMBER}"
+
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
@@ -21,7 +26,7 @@ podTemplate(label: 'mypod', containers: [
               sh "ls -al"
               sh "docker build ./webapp -t 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}"
               docker.withRegistry('https://557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
-                  docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}').push()
+                  docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:').push()
               }
           }
       }
