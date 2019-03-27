@@ -25,7 +25,7 @@ podTemplate(label: 'mypod', containers: [
       stage('Init') {
           container('docker') {
               sh "ls -al"
-              sh 'echo ${env.aws_ecr}'
+              sh "echo ${env.aws_ecr}"
               sh "echo ${image_id}"
               sh "docker build ./webapp -t 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
               docker.withRegistry('https://338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
