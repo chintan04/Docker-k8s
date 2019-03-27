@@ -1,3 +1,8 @@
+import java.text.SimpleDateFormat
+def date = new Date()
+sdf = new SimpleDateFormat("MM.dd.yyyy-HH.mm.ss")
+def image_id = "${BUILD_NUMBER}" + "_" + sdf.format(date)
+
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'maven', image: 'maven:3.3.9-jdk-8-alpine', ttyEnabled: true, command: 'cat'),
@@ -12,6 +17,7 @@ podTemplate(label: 'mypod', containers: [
           checkout scm
           container('maven') {
               stage('Build a Maven project') {
+                  sh 'echo ${aws_ecr}'
                   sh 'cd webapp && mvn clean package'
               }
           }
@@ -19,15 +25,17 @@ podTemplate(label: 'mypod', containers: [
       stage('Init') {
           container('docker') {
               sh "ls -al"
-              sh "docker build ./webapp -t 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}"
+              sh 'echo ${env.aws_ecr}'
+              sh "echo ${image_id}"
+              sh "docker build ./webapp -t 338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
               docker.withRegistry('https://338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
-                  docker.image('338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}').push()
+                  docker.image('338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:' +"${image_id}").push()
               }
           }
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployments/csye7374-rc csye7374=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}"
+              sh "kubectl set image deployments/csye7374-rc csye7374=338969645766.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
               sh "kubectl rollout status deployments/csye7374-rc"
           }
       }
