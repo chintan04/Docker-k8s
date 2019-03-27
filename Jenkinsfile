@@ -1,7 +1,7 @@
 import java.text.SimpleDateFormat
 def date = new Date()
-sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
-def image_id = sdf.format(date) + "_" + "${BUILD_NUMBER}"
+sdf = new SimpleDateFormat("MM.dd.yyyy-HH.mm.ss")
+def image_id = "${BUILD_NUMBER}" + "_" + sdf.format(date)
 
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
