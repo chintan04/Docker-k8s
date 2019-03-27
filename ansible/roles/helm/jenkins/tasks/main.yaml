@@ -1,16 +1,16 @@
 - name: Installing jenkins
   shell: helm install --name jenkins -f roles/helm/jenkins/tasks/values.yaml stable/jenkins
 
-- name:  Create a ServiceAccount named `jenkins-robot`
-  shell: kubectl -n default create serviceaccount jenkins-robot
-
-- name: cluster binding jenkins-robot
-  shell: kubectl -n default create rolebinding jenkins-robot-binding --clusterrole=cluster-admin --serviceaccount=default:jenkins-robot
+# - name: cluster binding jenkins-robot
+#   shell: kubectl -n default create rolebinding jenkins-binding --clusterrole=cluster-admin --serviceaccount=default:default
 - pause:
     seconds: 5
 - name: Generate Name of token for ServiceAccount jenkins
-  command: kubectl -n default get serviceaccount jenkins-robot -o go-template --template='{{range .secrets}}{{.name}}{{"\n"}}{{end}}'
+  command: kubectl -n default get serviceaccount jenkins -o go-template --template='{% raw %}{{range .secrets}}{{.name}}{{"\n"}}{{end}}{% endraw %}'
   register: jenkins_token
 
+- debug: var=jenkins_token
+
 - name: Generate token of ServiceAccount
-  shell: kubectl -n default get secrets {{jenkins_token.stdout}} -o go-template --template '{{index .data "token"}}' | base64 -D
+  shell: kubectl -n default get secrets {{jenkins_token.stdout}} -o go-template --template '\{\{index .data "token"\}\}'
+ 
