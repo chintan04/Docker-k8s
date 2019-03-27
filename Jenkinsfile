@@ -27,13 +27,13 @@ podTemplate(label: 'mypod', containers: [
               sh "echo ${image_id}"
               sh "docker build ./webapp -t 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
               docker.withRegistry('https://557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
-                  docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}').push()
+                  docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374').push("${image_id}")
               }
           }
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployments/csye7374-rc csye7374=557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${BUILD_NUMBER}"
+              sh "kubectl set image deployments/csye7374-rc csye7374=557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
               sh "kubectl rollout status deployments/csye7374-rc"
           }
       }
