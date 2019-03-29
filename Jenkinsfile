@@ -19,7 +19,7 @@ podTemplate(label: 'mypod', containers: [
           container('maven') {
               stage('Build a Maven project') {
                   sh 'echo ${aws_ecr_master}'
-                  sh 'echo ${env.aws_ecr}'
+                  sh 'echo ${aws_ecr}'
                   sh 'cd webapp && mvn clean package'
               }
           }
