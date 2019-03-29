@@ -18,8 +18,9 @@ podTemplate(label: 'mypod', containers: [
           checkout scm
           container('maven') {
               stage('Build a Maven project') {
-                  sh 'echo $aws_ecr_master'
-                  sh 'echo $aws_ecr'
+                  sh 'echo ${env.ecr_repo}'
+                //   sh 'echo ${env.aws_ecr_master}'
+                //   sh 'echo ${env.aws_ecr}'
                   sh 'cd webapp && mvn clean package'
               }
           }
@@ -27,17 +28,17 @@ podTemplate(label: 'mypod', containers: [
       stage('Init') {
           container('docker') {
               sh "ls -al"
-              sh 'echo ${env.aws_ecr}'
+              sh 'echo ${env.ecr_repo}'
               sh "echo ${image_id}"
-              sh "docker build ./webapp -t 557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
-              docker.withRegistry('https://557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374', 'ecr:us-east-1:awsid') {
-                  docker.image('557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:' +"${image_id}").push()
+              sh "docker build ./webapp -t ${env.ecr_repo}/csye7374:${image_id}"
+              docker.withRegistry('https://'+"${env.ecr_repo}"+'/csye7374', 'ecr:us-east-1:awsid') {
+                  docker.image("${env.ecr_repo}"+'/csye7374:' +"${image_id}").push()
               }
           }
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployments/csye7374-rc csye7374=557502683643.dkr.ecr.us-east-1.amazonaws.com/csye7374:${image_id}"
+              sh "kubectl set image deployments/csye7374-rc ${env.ecr_repo}/csye7374:${image_id}"
               sh "kubectl rollout status deployments/csye7374-rc"
           }
       }
