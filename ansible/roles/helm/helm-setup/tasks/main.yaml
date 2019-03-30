@@ -3,7 +3,6 @@
 - name: helm initialization
   command: helm init
 
-
 - name: creating service account tiller
   command: kubectl create serviceaccount --namespace kube-system tiller
 
