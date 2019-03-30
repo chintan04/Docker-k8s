@@ -18,7 +18,8 @@ podTemplate(label: 'mypod', containers: [
           checkout scm
           container('maven') {
               stage('Build a Maven project') {
-                  sh 'echo ${env.ecr_repo}'
+                  sh 'echo ${ecr_repo}'
+                  sh 'echo ecr_repo'
                 //   sh 'echo ${env.aws_ecr_master}'
                 //   sh 'echo ${env.aws_ecr}'
                   sh 'cd webapp && mvn clean package'
@@ -30,15 +31,15 @@ podTemplate(label: 'mypod', containers: [
               sh "ls -al"
               sh 'echo ${ecr_repo}'
               sh "echo ${image_id}"
-              sh "docker build ./webapp -t ${env.ecr_repo}/csye7374:${image_id}"
-              docker.withRegistry('https://'+"${env.ecr_repo}"+'/csye7374', 'ecr:us-east-1:awsid') {
-                  docker.image("${env.ecr_repo}"+'/csye7374:' +"${image_id}").push()
+              sh "docker build ./webapp -t ${ecr_repo}/csye7374:${image_id}"
+              docker.withRegistry('https://'+'ecr_repo'+'/csye7374', 'ecr:us-east-1:awsid') {
+                  docker.image('${ecr_repo}'+'/csye7374:' +"${image_id}").push()
               }
           }
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployments/csye7374-rc ${env.ecr_repo}/csye7374:${image_id}"
+              sh "kubectl set image deployments/csye7374-rc ${ecr_repo}/csye7374:${image_id}"
               sh "kubectl rollout status deployments/csye7374-rc"
           }
       }
