@@ -28,7 +28,7 @@ podTemplate(label: 'mypod', containers: [
       stage('Init') {
           container('docker') {
               sh "ls -al"
-              sh 'echo ${env.ecr_repo}'
+              sh 'echo ${ecr_repo}'
               sh "echo ${image_id}"
               sh "docker build ./webapp -t ${env.ecr_repo}/csye7374:${image_id}"
               docker.withRegistry('https://'+"${env.ecr_repo}"+'/csye7374', 'ecr:us-east-1:awsid') {
