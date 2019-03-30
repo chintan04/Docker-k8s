@@ -7,21 +7,35 @@ data:
   profile: dev
 
 ---
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: csye7374-rc
 spec:
   replicas: 3
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   selector:
-    app: csye7374
+    matchLabels:
+      app: csye7374
   template:
     metadata:
       labels:
         app: csye7374
     spec:
+      initContainers:
+      - name: init-container-01
+        image: busybox:1.30
+        command: ['sh', '-c', 'sleep 30']
+      - name: init-container-02
+        image: busybox:1.30
+        command: ['sh', '-c', 'sleep 10']
       containers:
-      - image: ecr_repo/csye7374:latest   
+      - image: 501702557048.dkr.ecr.us-east-1.amazonaws.com/csye7374:latest   
         name: csye7374 
         env:
 
@@ -69,13 +83,13 @@ spec:
         ports:
         - containerPort: 8080    
           protocol: TCP
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
+        # resources:
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "500m"
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "500m"
 
 ---
 apiVersion: v1
@@ -90,3 +104,4 @@ spec:
     nodePort: 30130          
   selector:
     app: csye7374
+  

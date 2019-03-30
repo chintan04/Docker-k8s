@@ -1,7 +1,7 @@
 ---
 
-cluster_name: k8s.csye6225-fall2018-shahc.me
-state_store: s3://k8s.csye6225-fall2018-shahc.me
+cluster_name: k8s.csye6225-fall2018-gaikawads.me
+state_store: s3://k8.csye6225-fall2018-gaikawads.me
 node_count: 3
 ecr_repo: 557502683643.dkr.ecr.us-east-1.amazonaws.com
-bucket_name: webapp-csye7374-shahc
+bucket_name: webapp-csye7374-gaikawads

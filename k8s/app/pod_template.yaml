@@ -20,6 +20,13 @@ spec:
       labels:
         app: csye7374
     spec:
+      initContainers:
+      - name: init-container-01
+        image: busybox:1.30
+        command: ['sh', '-c', 'sleep 30']
+      - name: init-container-02
+        image: busybox:1.30
+        command: ['sh', '-c', 'sleep 10']
       containers:
       - image: ecr_repo/csye7374:latest   
         name: csye7374 
@@ -69,13 +76,13 @@ spec:
         ports:
         - containerPort: 8080    
           protocol: TCP
-        resources:
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
+        # resources:
+        #   limits:
+        #     memory: "256Mi"
+        #     cpu: "500m"
+        #   requests:
+        #     memory: "256Mi"
+        #     cpu: "500m"
 
 ---
 apiVersion: v1
@@ -90,3 +97,4 @@ spec:
     nodePort: 30130          
   selector:
     app: csye7374
+  
