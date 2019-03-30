@@ -35,7 +35,7 @@ podTemplate(label: 'mypod', containers: [
       }
       stage('Update Kubernetes') {
           container('kubectl') {
-              sh "kubectl set image deployments/csye7374-rc ${env.ecr_repo}/csye7374:${image_id}"
+              sh "kubectl set image deployments/csye7374-rc csye7374=${env.ecr_repo}/csye7374:${image_id}"
               sh "kubectl rollout status deployments/csye7374-rc"
           }
       }
