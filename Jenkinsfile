@@ -18,7 +18,7 @@ podTemplate(label: 'mypod', containers: [
           checkout scm
           container('maven') {
               stage('Build a Maven project') {
-                  sh 'echo ${env.ecr_repo}'
+                  sh "echo ${env.ecr_repo}"
                   sh 'echo ecr_repo'
                 //   sh 'echo ${env.aws_ecr_master}'
                 //   sh 'echo ${env.aws_ecr}'
