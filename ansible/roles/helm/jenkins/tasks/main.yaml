@@ -13,7 +13,6 @@
 - name: Generate Name of token for ServiceAccount jenkins
   command: kubectl -n default get serviceaccount jenkins -o go-template --template='{% raw %}{{range .secrets}}{{.name}}{{"\n"}}{{end}}{% endraw %}'
   register: jenkins_token
-- debug: var=jenkins_token
 
 - debug: var=jenkins_token
 

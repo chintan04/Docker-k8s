@@ -134,7 +134,7 @@ public class UsersController {
         try {
             Prometheus.increment();
             Metrics.counter("User.Controller").increment();
-            this.response = Response.jsonString("new-pong");
+            this.response = Response.jsonString("pong");
             response.getWriter().write(this.response);
             log.info("Successful ping msg");
         } catch (Exception ex) {
