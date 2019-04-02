@@ -7,14 +7,21 @@ data:
   profile: dev
 
 ---
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: csye7374-rc
 spec:
   replicas: 3
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
   selector:
-    app: csye7374
+    matchLabels:
+      app: csye7374
   template:
     metadata:
       labels:
@@ -89,4 +96,4 @@ spec:
     targetPort: 8080         
     nodePort: 30130          
   selector:
-    app: csye7374
+app: csye7374

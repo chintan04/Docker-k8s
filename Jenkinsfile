@@ -11,12 +11,24 @@ pipeline {
         // withCredentials([file(credentialsId: 'github4')]){
           ansiblePlaybook playbook: 'ansible/k8s-dockerFile.yaml',
           hostKeyChecking: false,
-          extras: "--vault-password-file ''"
+          // extras: "--vault-password-file ''"
           // }
       }
     }
   }
 }
+
+node{
+    stage('Init'){
+            checkout scm
+
+          sh "apt-get update -y"  
+          sh 'apt install maven -y'
+          sh 'mvn -f webapp/ install'
+
+          }
+}
+
 podTemplate(label: 'mypod', containers: [
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat'),
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.8.0', command: 'cat', ttyEnabled: true),
