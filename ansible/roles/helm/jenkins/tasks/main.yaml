@@ -17,5 +17,4 @@
 - debug: var=jenkins_token
 
 - name: Generate token of ServiceAccount
-  shell: kubectl -n default get secrets {{jenkins_token.stdout}} -o go-template --template '\{\{index .data "token"\}\}'
- 
+shell: kubectl -n default get secrets {{jenkins_token.stdout}} -o go-template --template '\{\{index .data "token"\}\}'

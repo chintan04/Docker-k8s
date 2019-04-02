@@ -1,4 +1,3 @@
-
 import java.text.SimpleDateFormat
 def date = new Date()
 sdf = new SimpleDateFormat("MM.dd.yyyy-HH.mm.ss")
@@ -40,5 +39,4 @@ podTemplate(label: 'mypod', containers: [
           }
       }
   }
-  }
-
+}
