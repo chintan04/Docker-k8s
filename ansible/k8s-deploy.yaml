@@ -3,10 +3,14 @@
 - hosts: localhost
   connection: local
   tasks:
+  
   - name: Set ECR repo name in comtainer env
     command: kubectl create configmap special-config --from-literal=ecr_repo={{ecr_repo}}
 
-  - name: Setting up the kubernetes cluster
+  - name: Setting up the kubernetes cluster - configMaps
+    command: kubectl apply -f ../k8s/app/ConfigMaps.yaml
+
+  - name: Setting up the kubernetes cluster - Secrets
     command: kubectl apply -f ../k8s/app/DB-Secrets.yaml
 
   - name: set the repo name in pod config
@@ -17,6 +21,9 @@
   
   - name: Setting up the kubernetes cluster
     command: kubectl apply -f ../k8s/app/pod.yaml
+
+  - name: Setting up the kubernetes cluster - load Balancer
+    command: kubectl apply -f ../k8s/app/loadBalancer.yaml
 
   - pause:
       seconds: 60
