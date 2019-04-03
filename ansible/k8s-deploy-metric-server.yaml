@@ -1,0 +1,8 @@
+---
+
+- hosts: localhost
+  connection: local
+  tasks:
+  
+  - name: Deploying metrics server
+    command: kubectl apply -f ../k8s/metrics-server/deploy/1.8+/
