@@ -54,9 +54,8 @@ Master:
   # InitContainerEnv:
   #   - name: http_proxy
   #     value: "http://192.168.64.1:3128"
-  ContainerEnv:
-    - name: aws_ecr_master
-      value: 557502683643.dkr.ecr.us-east-1.amazonaws.com
+  # ContainerEnv:
+  
   # Set min/max heap here if needed with:
   # JavaOpts: "-Xms512m -Xmx512m"
   # JenkinsOpts: ""
@@ -200,36 +199,8 @@ Master:
             - envVars:
                 env:
                   - key: ecr_repo
-                    value: 557502683643.dkr.ecr.us-east-1.amazonaws.com
-        # credentials:
-        #   system:
-        #     domainCredentials:
-        #       - domain :
-        #           name: "github.com"
-        #           description: "GitHub"
-        #         credentials:
-        #           - usernamePassword:
-        #               scope:    GLOBAL
-        #               id:       github-user
-        #               username: chintan04
-        #               password: ${env.GITHUB_PWD}
-        #               description: "Github Cred"
-        #       - domain:
-        #           name: "AWS"
-        #           description: "AWS details"
-        #         credentials:
-        #           - string:
-        #               scope: GLOBAL
-        #               id: "ecr_repo"
-        #               secret: "557502683643.dkr.ecr.us-east-1.amazonaws.com"
-        #               description: "ECR Repo"
-        #           - aws:
-        #               scope: GLOBAL
-        #               id: "awsid"
-        #               accessKey: ${env.AWS_ACCESS_KEY_ID} 
-        #               secretKey: ${env.AWS_SECRET_ACCESS_KEY}
-        #               description: "AWS Credentials"
-
+                    value: 501702557048.dkr.ecr.us-east-1.amazonaws.com
+        
   Sidecars:
     configAutoReload:
       # If enabled: true, Jenkins Configuration as Code will be reloaded on-the-fly without a reboot.  If false or not-specified,
@@ -343,9 +314,6 @@ Agent:
   # Configure the attributes as they appear in the corresponding Java class for that type
   # https://github.com/jenkinsci/kubernetes-plugin/tree/master/src/main/java/org/csanchez/jenkins/plugins/kubernetes/volumes
   # Pod-wide ennvironment, these vars are visible to any container in the slave pod
-  envVars:
-  - name: aws_ecr
-    value: 557502683643.dkr.ecr.us-east-1.amazonaws.com
   volumes:
     - type: HostPath
       hostPath: /var/run/docker.sock

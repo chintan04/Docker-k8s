@@ -981,7 +981,7 @@ serverFiles:
         metrics_path: '/actuator/prometheus'
         static_configs:
           - targets: 
-             - "a275e7015557211e997860ae7adbdcde-1231142819.us-east-1.elb.amazonaws.com"
+             - 
 
       # A scrape configuration for running Prometheus on a Kubernetes cluster.
       # This uses separate scrape configs for cluster components (i.e. API server, node)
