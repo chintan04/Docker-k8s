@@ -5,6 +5,7 @@ import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sns.model.PublishResult;
 import com.csye6225.aws.AwsS3Client;
+import com.csye6225.kafka.Producer;
 import com.csye6225.metrics.Prometheus;
 import com.csye6225.model.Response;
 import com.csye6225.model.Users;
@@ -153,6 +154,7 @@ public class UsersController {
             if (userobj != null) {
                 Prometheus.increment();
                 System.out.println("try - " + user.getUsername());
+/*
                 AmazonSNS amazonSNS = AmazonSNSClientBuilder.defaultClient();
                 System.out.println("Getting ARN........");
                 String arn = amazonSNS.createTopic("password_reset").getTopicArn();
@@ -161,7 +163,10 @@ public class UsersController {
                 System.out.println("Publish Request created.......");
                 PublishResult publishResult = amazonSNS.publish(publishRequest);
                 System.out.println("Result published - " + publishResult.getMessageId());
-                this.response = Response.jsonString("arn - " + arn + "message ID -" + publishResult.getMessageId() + " test " + user.getUsername());
+*/
+                System.out.println("Sending to Kafka Producer");
+                long offset = Producer.SendToKafka(user.getUsername());
+                this.response = Response.jsonString("offset - " + offset + " for user - " + user.getUsername());
                 response.getWriter().write(this.response);
             } else {
                 System.out.println("inside else");
