@@ -23,3 +23,11 @@
    policy_name: "k8-cloudwatch-Access"
    state: present
    policy_json: " {{ lookup( 'template', 'cloudwatchpolicy.json') }} "
+
+- name: Creating autoscaling policy from template
+  iam_policy:
+   iam_type: role
+   iam_name: "{{ rolename.stdout_lines[0] }}"
+   policy_name: "Cluster-Autoscaling"
+   state: present
+   policy_json: " {{ lookup( 'template', 'autoscaling.json') }} "
