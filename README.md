@@ -20,5 +20,5 @@
 | Akul Nigam | 001826681 | nigam.a@husky.neu.edu | k8s.csye6225-fall2018-nigama.me |
 | Hiren Shah | 001828539 | shah.hi@husky.neu.edu | k8s.csye6225-fall2018-shahhi.me |
 | Sayali Gaikawad | 001822593 | gaikawad.s@husky.neu.edu | k8.csye6225-fall2018-gaikawads.me |
-| Chintan Shah | 001820442 | shah.c@husky.neu.edu | k8s.csye6225-fall2018-shahc.me |
+| Chintan  | 001820442 | shah.c@husky.neu.edu | k8s.csye6225-fall2018-shahc.me |
 
