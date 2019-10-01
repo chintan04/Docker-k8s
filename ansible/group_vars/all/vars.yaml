@@ -1,5 +1,5 @@
 ---
 
-cluster_name: k8s.csye6225-fall2018-shahc.me
-state_store: s3://k8s.csye6225-fall2018-shahc.me
+cluster_name: #cluster name
+state_store: #s3 name for k8s
 node_count: 3
